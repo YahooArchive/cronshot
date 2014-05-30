@@ -44,11 +44,19 @@ grunt.initConfig({
 // Load tasks
 grunt.loadNpmTasks('grunt-asset-deploy');
 
+grunt.registerTask('blah', function() {
+	console.log('yoooo');
+})
+
 cronshot.run({
 	'onTick': function() {
 		webshot('http://touchdown.media.yahoo.com:4080/console/?m_id=td-applet-scores', 'screenshot.png', function(err) {
 			if(!err) {
-				grunt.tasks('asset_deploy');
+				// grunt.tasks('asset_deploy');
+				grunt.util.spawn({
+					'grunt': true,
+					'args': ['blah', 'asset_deploy']
+				});
 			} else {
 				console.log('error: ', err);
 			}
