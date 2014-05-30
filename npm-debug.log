@@ -1,0 +1,96 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'node', '/usr/local/bin/npm', 'install' ]
+2 info using npm@1.4.9
+3 info using node@v0.10.28
+4 verbose readDependencies using package.json deps
+5 verbose install where, deps [ '/Users/gfranko/Yahoo!/cronshot.js',
+5 verbose install   [ 'cron', 'webshot', 'mobstor', 'pageres' ] ]
+6 info preinstall cronshot.js@0.0.0
+7 verbose readDependencies using package.json deps
+8 verbose cache add [ 'mobstor@*', null ]
+9 verbose cache add name=undefined spec="mobstor@*" args=["mobstor@*",null]
+10 verbose parsed url { protocol: null,
+10 verbose parsed url   slashes: null,
+10 verbose parsed url   auth: null,
+10 verbose parsed url   host: null,
+10 verbose parsed url   port: null,
+10 verbose parsed url   hostname: null,
+10 verbose parsed url   hash: null,
+10 verbose parsed url   search: null,
+10 verbose parsed url   query: null,
+10 verbose parsed url   pathname: 'mobstor@*',
+10 verbose parsed url   path: 'mobstor@*',
+10 verbose parsed url   href: 'mobstor@*' }
+11 verbose cache add name="mobstor" spec="*" args=["mobstor","*"]
+12 verbose parsed url { protocol: null,
+12 verbose parsed url   slashes: null,
+12 verbose parsed url   auth: null,
+12 verbose parsed url   host: null,
+12 verbose parsed url   port: null,
+12 verbose parsed url   hostname: null,
+12 verbose parsed url   hash: null,
+12 verbose parsed url   search: null,
+12 verbose parsed url   query: null,
+12 verbose parsed url   pathname: '*',
+12 verbose parsed url   path: '*',
+12 verbose parsed url   href: '*' }
+13 verbose addNamed [ 'mobstor', '*' ]
+14 verbose addNamed [ null, '*' ]
+15 verbose already installed skipping pageres@* /Users/gfranko/Yahoo!/cronshot.js
+16 silly lockFile 5c07bf8b-mobstor mobstor@*
+17 verbose lock mobstor@* /Users/gfranko/.npm/5c07bf8b-mobstor.lock
+18 silly addNameRange { name: 'mobstor', range: '*', hasData: false }
+19 verbose already installed skipping cron@^1.0.4 /Users/gfranko/Yahoo!/cronshot.js
+20 verbose url raw mobstor
+21 verbose url resolving [ 'https://registry.npmjs.org/', './mobstor' ]
+22 verbose url resolved https://registry.npmjs.org/mobstor
+23 info trying registry request attempt 1 at 19:06:22
+24 http GET https://registry.npmjs.org/mobstor
+25 verbose already installed skipping webshot@^0.14.0 /Users/gfranko/Yahoo!/cronshot.js
+26 http 404 https://registry.npmjs.org/mobstor
+27 verbose headers { date: 'Fri, 30 May 2014 02:06:23 GMT',
+27 verbose headers   server: 'CouchDB/1.5.0 (Erlang OTP/R14B04)',
+27 verbose headers   'content-type': 'application/json',
+27 verbose headers   via: '1.1 varnish',
+27 verbose headers   'cache-control': 'max-age=0',
+27 verbose headers   'content-length': '52',
+27 verbose headers   'accept-ranges': 'bytes',
+27 verbose headers   age: '0',
+27 verbose headers   'x-served-by': 'cache-v41-ASH, cache-lax1435-LAX',
+27 verbose headers   'x-cache': 'MISS, MISS',
+27 verbose headers   'x-cache-hits': '0, 0',
+27 verbose headers   'x-timer': 'S1401415583.150289,VS0,VE175',
+27 verbose headers   'keep-alive': 'timeout=10, max=50',
+27 verbose headers   connection: 'Keep-Alive' }
+28 silly registry.get cb [ 404,
+28 silly registry.get   { date: 'Fri, 30 May 2014 02:06:23 GMT',
+28 silly registry.get     server: 'CouchDB/1.5.0 (Erlang OTP/R14B04)',
+28 silly registry.get     'content-type': 'application/json',
+28 silly registry.get     via: '1.1 varnish',
+28 silly registry.get     'cache-control': 'max-age=0',
+28 silly registry.get     'content-length': '52',
+28 silly registry.get     'accept-ranges': 'bytes',
+28 silly registry.get     age: '0',
+28 silly registry.get     'x-served-by': 'cache-v41-ASH, cache-lax1435-LAX',
+28 silly registry.get     'x-cache': 'MISS, MISS',
+28 silly registry.get     'x-cache-hits': '0, 0',
+28 silly registry.get     'x-timer': 'S1401415583.150289,VS0,VE175',
+28 silly registry.get     'keep-alive': 'timeout=10, max=50',
+28 silly registry.get     connection: 'Keep-Alive' } ]
+29 silly lockFile 5c07bf8b-mobstor mobstor@*
+30 silly lockFile 5c07bf8b-mobstor mobstor@*
+31 error 404 404 Not Found: mobstor
+31 error 404
+31 error 404 'mobstor' is not in the npm registry.
+31 error 404 You should bug the author to publish it
+31 error 404 It was specified as a dependency of 'cronshot.js'
+31 error 404
+31 error 404 Note that you can also install from a
+31 error 404 tarball, folder, or http url, or git url.
+32 error System Darwin 13.1.0
+33 error command "node" "/usr/local/bin/npm" "install"
+34 error cwd /Users/gfranko/Yahoo!/cronshot.js
+35 error node -v v0.10.28
+36 error npm -v 1.4.9
+37 error code E404
+38 verbose exit [ 1, true ]

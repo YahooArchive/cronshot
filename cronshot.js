@@ -28,7 +28,34 @@ var CronJob = require('cron').CronJob,
 
 cronshot.run({
 	'onTick': function() {
-		webshot('http://touchdown.media.yahoo.com:4080/console/?m_id=td-applet-scores', 'screenshot.png', function(err) {
+		webshot('http://touchdown.media.yahoo.com:4080/console/?m_id=td-applet-scores', 'screenshot.png', {
+			'screenSize': {
+				'width': 1024,
+				'height': 768
+			},
+			'shotSize': {
+				'width': 'window',
+				'height': 'window'
+			},
+			'shotOffset': {
+				'left': 0,
+				'right': 0,
+				'top': 0,
+				'bottom': 0
+			},
+			'phantomPath': 'phantomjs',
+			'phantomConfig': {},
+			'customHeaders': null,
+			'defaultWhiteBackground': true,
+			'customCSS': '',
+			'quality': 100,
+			'streamType': 'png',
+			'siteType': 'url',
+			'renderDelay': 0,
+			'timeout': 0,
+			'takeShotOnCallback': false,
+			'errorIfStatusIsNot200': false
+		}, function(err) {
 			if(!err) {
 
 				var content = fs.createReadStream('screenshot.png'),
