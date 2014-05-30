@@ -1,0 +1,24 @@
+{
+  "name": "cronshot.js",
+  "version": "0.0.0",
+  "description": "Cron job to take web page screenshots",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@git.corp.yahoo.com:sports/cronshot.js.git"
+  },
+  "keywords": [
+    "cron",
+    "screenshot"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "cron": "^1.0.4",
+    "grunt-asset-deploy": "git+ssh://git@git.corp.yahoo.com:touchdown/grunt-asset-deploy.git",
+    "webshot": "^0.14.0"
+  }
+}
