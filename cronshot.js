@@ -1,6 +1,7 @@
 var CronJob = require('cron').CronJob,
 	webshot = require('webshot'),
-	grunt = require('grunt'),
+	fs = require('fs'),
+	mobstor = require('mobstor'),
 	cron = {
 		'run': function(obj) {
 			var cronPattern = obj.cronPattern || '*/10 * * * * *',
@@ -25,30 +26,27 @@ var CronJob = require('cron').CronJob,
 		}
 	};
 
-// hack to avoid loading a Gruntfile
-// You can skip this and just use a Gruntfile instead
-grunt.task.init = function() {};
-
-// Init config
-grunt.initConfig({
-	asset_deploy: {
-		options: {
-			src: 'screenshot.png',
-			host: 'playground.yahoofs.com',
-			path: '/gfranko/'
-			// yca: 'yahoo.mobstor.client.some.property'
-		}
-	}
-});
-
-// Load tasks
-grunt.loadNpmTasks('grunt-asset-deploy');
-
 cronshot.run({
 	'onTick': function() {
 		webshot('http://touchdown.media.yahoo.com:4080/console/?m_id=td-applet-scores', 'screenshot.png', function(err) {
 			if(!err) {
-				grunt.tasks('asset_deploy');
+
+				var content = fs.createReadStream('screenshot.png'),
+					config = {
+						host : "playground.yahoofs.com"
+					},
+					client;
+
+				client = mobstor.createClient(config);
+				client.storeFile('/gfranko/screenshot.png', content, function mobstorStoreFileCb(err) {
+					// skip 409 conflict issues since the asset was uploaded correctly
+					if (err && err.code !== 409) {
+						console.log('Failed');
+					} else {
+						console.log('Successfully deployed');
+					}
+				});
+
 			} else {
 				console.log('error: ', err);
 			}
