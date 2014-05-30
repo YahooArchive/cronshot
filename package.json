@@ -18,7 +18,8 @@
   "license": "ISC",
   "devDependencies": {
     "cron": "^1.0.4",
-    "grunt-asset-deploy": "git+ssh://git@git.corp.yahoo.com:touchdown/grunt-asset-deploy.git",
-    "webshot": "^0.14.0"
+    "webshot": "^0.14.0",
+    "mobstor": "*",
+    "pageres": "*"
   }
 }
