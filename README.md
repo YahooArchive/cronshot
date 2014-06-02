@@ -59,7 +59,7 @@ cronshot.run({
 // The base host that you would like to save to
 'host': 'playground.yahoofs.com',
 // the mobster path that you would like to save to
-'mobsterPath': '/gfranko/screenshot.png',
+'mobstorPath': '/gfranko/screenshot.png',
 // The dimensions of the browser window
 'screenSize': {
 	'width': 1024,

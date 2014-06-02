@@ -133,7 +133,7 @@ var CronJob = require('cron').CronJob,
 
 					client = mobstor.createClient(config);
 
-					client.storeFile(mergedOptions.mobsterPath, content, function mobstorStoreFileCb(err) {
+					client.storeFile(mergedOptions.mobstorPath, content, function mobstorStoreFileCb(err) {
 						// skip 409 conflict issues since the asset was uploaded correctly
 						if (err && err.code !== 409) {
 							console.log('Failed');
@@ -153,7 +153,7 @@ var CronJob = require('cron').CronJob,
 		'url': 'http://touchdown.media.yahoo.com:4080/console/?m_id=td-applet-scores',
 		'imageName': 'screenshot.png',
 		'host': 'playground.yahoofs.com',
-		'mobsterPath': '/gfranko/screenshot.png'
+		'mobstorPath': '/gfranko/screenshot.png'
 	},
 	cron = {
 		'run': function(obj) {
