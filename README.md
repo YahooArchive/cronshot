@@ -24,7 +24,7 @@ cronshot.js uses:
 
 
 * **Run the example `cronshot-runner.js`**
- `node cronshot-runner.js`
+ - `node cronshot-runner.js`
 
 
 ## Examples
