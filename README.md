@@ -49,6 +49,17 @@ cronshot.run({
 ## Options
 
 ```javascript
+// The time to fire off your job. This can be in the form of cron syntax or a JS Date object.
+// The default runs every 10 seconds
+'cronPattern': '*/10 * * * * *',
+// The webpage URL that you would like to take a screenshot of
+'url': 'http://touchdown.media.yahoo.com:4080/console/?m_id=td-applet-scores',
+// The name of the image you would like to be saved
+'imageName': 'screenshot.png',
+// The base host that you would like to save to
+'host': 'playground.yahoofs.com',
+// the mobster path that you would like to save to
+'mobsterPath': '/gfranko/screenshot.png',
 // The dimensions of the browser window
 'screenSize': {
 	'width': 1024,
@@ -105,17 +116,7 @@ cronshot.run({
 // window.callPhantom('takeShot');
 'takeShotOnCallback': false,
 // If the loaded page has a non-200 status code, don't take a screenshot, cause an error instead.
-'errorIfStatusIsNot200': false,
-// The time to fire off your job. This can be in the form of cron syntax or a JS Date object.
-'cronPattern': '*/10 * * * * *',
-// The webpage URL that you would like to take a screenshot of
-'url': 'http://touchdown.media.yahoo.com:4080/console/?m_id=td-applet-scores',
-// The name of the image you would like to be saved
-'imageName': 'screenshot.png',
-// The base host that you would like to save to
-'host': 'playground.yahoofs.com',
-// the mobster path that you would like to save to
-'mobsterPath': '/gfranko/screenshot.png'
+'errorIfStatusIsNot200': false
 ```
 
 ## Contributors
