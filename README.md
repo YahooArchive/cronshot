@@ -41,7 +41,7 @@ cronshot.run({
 
 **Passing Options via Command Line**
 
-`node cronshot-runner.js --customCSS 'body { background: blue !important; }'
+`node cronshot-runner.js --customCSS 'body { background: blue !important; }`
 
 **Note:** You can pass BOTH code options and command line options. If you pass the same option via both methods, the command line option(s) take precedence.
 

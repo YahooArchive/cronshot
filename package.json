@@ -15,6 +15,7 @@
     "screenshot"
   ],
   "author": "",
+  "main": "./cronshot.js",
   "license": "ISC",
   "devDependencies": {
     "cron": "^1.0.4",
