@@ -1,7 +1,7 @@
 cronshot.js
 ===========
 
-Node module that allows you to schedule cron jobs to take and store web page screenshots
+Node module that allows you to schedule cron jobs to take and store web page screenshots locally and on mob store
 
 ## How
 
@@ -35,15 +35,16 @@ cronshot.js uses:
 var cronshot = require('./cronshot');
 
 cronshot.run({
+	'url': 'http://google.com',
 	'customCSS': 'body { background: blue !important; }'
 });
 ```
 
 **Passing Options via Command Line**
 
-`node cronshot-runner.js --customCSS 'body { background: blue !important; }'`
+`node cronshot-runner.js --customCSS 'body { background: blue !important; }' --url 'http://google.com'`
 
-**Note:** You can pass BOTH code options and command line options. If you pass the same option via both methods, the command line option(s) take precedence.
+**Note:** You can pass BOTH **code options** AND **command line options**. If you pass the same option via both methods, the command line option takes precedence.
 
 ## Options
 
