@@ -1,183 +1,80 @@
-var CronJob = require('cron').CronJob,
-	webshot = require('./libs/webshot/lib/webshot'),
-	fs = require('fs'),
-	mobstor = require('mobstor'),
-	utils = {
-        'isObject': function(obj) {
-            if(!obj) {
-                return false;
-            }
-            return Object.prototype.toString.call(obj) === '[object Object]';
-        },
-        'isArray': function(arr) {
-            if(!arr) {
-                return false;
-            }
-            if('isArray' in Array) {
-                return Array.isArray(arr);
-            } else {
-                return Object.prototype.toString.call(arr) === '[object Array]';
-            }
-        },
-        'each': function(collection, callback) {
-            var x, len;
-            if(utils.isArray(collection)) {
-                x = -1;
-                len = collection.length;
-                while(++x < len) {
-                    if (callback(x, collection[x]) === false) {
-                        break;
-                    }
-                }
-            } else if(utils.isObject(collection)) {
-                for(x in collection) {
-                    if(collection.hasOwnProperty(x)) {
-                        if (callback(x, collection[x]) === false) {
-                            break;
-                        }
-                    }
-                }
-            }
-        },
-        'mergeOptions': function deepMerge(defaultOptions, userOptions) {
-            if(!utils.isObject(defaultOptions) || !utils.isObject(userOptions) || !Object.keys) {
-                return;
-            }
-            var newObj = {};
+var CronJob = require('cron').CronJob;
+var webshot = require('./libs/webshot/lib/webshot');
+var fs = require('fs');
+var mobstor = require('mobstor');
+var utils = require('./utils');
+var defaultOptions = require('./config/default_options');
+var _ = require('underscore');
 
-            utils.each(defaultOptions, function(key, val) {
-                newObj[key] = defaultOptions[key];
-            });
+function saveToMobstor(options) {
+  var content = fs.createReadStream(options.imageName);
+  var config = {
+    host : options.mobstorHost
+  };
+  var client = mobstor.createClient(config);
 
-            utils.each(userOptions, function(key, val) {
-                var currentUserOption = userOptions[key];
-                if(!utils.isObject(currentUserOption)) {
-                    newObj[key] = currentUserOption;
-                } else {
-                    if(!defaultOptions[key]) {
-                        newObj[key] = currentUserOption;
-                    } else {
-                        newObj[key] = deepMerge(defaultOptions[key], currentUserOption);
-                    }
-                }
-            });
+  client.storeFile(options.mobstorPath, content, function (err) {
+    // skip 409 conflict issues since the asset was uploaded correctly
+    if (err && err.code !== 409) {
+      utils.logError(err);
+    } 
+    else {
+      utils.log('Successfully deployed ' + options.imageName);
+    }
+  });
+}
 
-            return newObj;
-        },
-        'noop': function noop() {}
-	},
-	getCommandLineOptions = function() {
-		var argsObj = {};
+/*  onTickFactory: return onTick function for cronjob given cronshot options 
+ *  ENSURES: returns a function that handles onTick events 
+ */
+var onTickFactory = function(options) {
+  return function() {
+    webshot(options.url, options.imageName, options, function(err) {
+      if(err)
+        return utils.logError(err);
+      saveToMobstor(options);
+    });
+  };
+};
 
-		process.argv.forEach(function(arg, iterator) {
-			if(arg.charAt(0) === '-' && arg.charAt(1) === '-') {
-				argsObj[arg.substring(2, arg.length)] = process.argv[iterator + 1];
-			}
-		});
+/*  onCompleteFactory: return onComplete function for cronjob given 
+ *    cronshot options 
+ *  ENSURES: returns a function that handles onComplete events 
+ */
+var onCompleteFactory = function(options) {
+  return utils.noop;
+};
 
-		return argsObj;
-	},
-	defaultOptions = {
-		'screenSize': {
-			'width': 1024,
-			'height': 768
-		},
-		'shotSize': {
-			'width': 'window',
-			'height': 'window'
-		},
-		'shotOffset': {
-			'left': 0,
-			'right': 0,
-			'top': 0,
-			'bottom': 0
-		},
-		'phantomPath': 'phantomjs',
-		'phantomConfig': {},
-		'customHeaders': null,
-		'defaultWhiteBackground': true,
-		'customCSS': '',
-		'quality': 75,
-		'streamType': 'png',
-		'siteType': 'url',
-		'renderDelay': 0,
-		'timeout': 0,
-		'takeShotOnCallback': false,
-		'errorIfStatusIsNot200': false,
-		'cronPattern': '*/10 * * * * *',
-		'onTick': function() {
-			webshot(mergedOptions.url, mergedOptions.imageName, {
-				'screenSize': mergedOptions.screenSize,
-				'shotSize': mergedOptions.shotSize,
-				'shotOffset': mergedOptions.shotOffset,
-				'phantomPath': mergedOptions.phantomPath,
-				'phantomConfig': mergedOptions.phantomConfig,
-				'customHeaders': mergedOptions.customHeaders,
-				'defaultWhiteBackground': mergedOptions.defaultWhiteBackground,
-				'customCSS': mergedOptions.customCSS,
-				'quality': mergedOptions.quality,
-				'streamType': mergedOptions.streamType,
-				'siteType': mergedOptions.siteType,
-				'renderDelay': mergedOptions.renderDelay,
-				'timeout': mergedOptions.timeout,
-				'takeShotOnCallback': mergedOptions.takeShotOnCallback,
-				'errorIfStatusIsNot200': mergedOptions.errorIfStatusIsNot200
-			}, function(err) {
-				if(!err) {
+var startCronJob = function(opt) {
+  var job = new CronJob({
+    'cronTime': opt.cronPattern,
+    'onTick': onTickFactory(opt),
+    'onComplete': onCompleteFactory(opt),
+    'start': opt.start,
+    'timeZone': opt.timeZone
+  });
+};
 
-					var content = fs.createReadStream(mergedOptions.imageName),
-						config = {
-							host : mergedOptions.host
-						},
-						client;
+var startCapturing = function(opts) {
+  // merge default options with any command line options and passed options
+  var options = _.defaults(
+    utils.getCommandLineOptions(), 
+    _.defaults((utils.isObject(opts) ? opts : {}), defaultOptions)
+  );
 
-					client = mobstor.createClient(config);
+  /*
+  var options = utils.mergeOptions(defaultOptions, 
+    utils.mergeOptions(
+      (utils.isObject(opts) ? opts : {}), 
+      utils.getCommandLineOptions()
+    )
+  );
+  */
 
-					client.storeFile(mergedOptions.mobstorPath, content, function mobstorStoreFileCb(err) {
-						// skip 409 conflict issues since the asset was uploaded correctly
-						if (err && err.code !== 409) {
-							console.log('Failed');
-						} else {
-							console.log('Successfully deployed');
-						}
-					});
+  utils.log('Starting to capture ' + options.url);
+  startCronJob(options);
+};
 
-				} else {
-					console.log('error: ', err);
-				}
-			});
-		},
-		'onComplete': utils.noop,
-		'start': true,
-		'timeZone': '',
-		'url': 'http://touchdown.media.yahoo.com:4080/console/?m_id=td-applet-scores',
-		'imageName': 'screenshot.png',
-		'host': 'playground.yahoofs.com',
-		'mobstorPath': '/gfranko/screenshot.png'
-	},
-	cron = {
-		'run': function(obj) {
-			var cronPattern = obj.cronPattern,
-				onTick = obj.onTick,
-				onComplete = obj.onComplete,
-				start = obj.start,
-				timeZone = obj.timeZone,
-				job = new CronJob({
-					'cronTime': cronPattern,
-					'onTick': onTick,
-					'onComplete': onComplete,
-					'start': start,
-					'timeZone': timeZone
-				});
-		}
-	},
-	mergedOptions = {},
-	cronshot = module.exports = {
-		run: function(opts) {
-			// merge default options with any command line options and passed options
-			mergedOptions = utils.mergeOptions(defaultOptions, utils.mergeOptions((utils.isObject(opts) ? opts : {}), getCommandLineOptions()));
-			cron.run(mergedOptions);
-		},
-		'webshot': webshot,
-		'mobstor':  mobstor
-	};
+var cronshot = module.exports = {
+  'startCapturing': startCapturing
+};
