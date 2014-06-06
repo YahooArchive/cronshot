@@ -56,6 +56,8 @@ cronshot.run({
 'url': 'http://touchdown.media.yahoo.com:4080/console/?m_id=td-applet-scores',
 // The name of the image you would like to be saved
 'imageName': 'screenshot.png',
+// Whether or not you would like to save a copy of the screenshot image locally
+'saveImageLocally': false,
 // The base host that you would like to save to
 'host': 'playground.yahoofs.com',
 // the mobster path that you would like to save to

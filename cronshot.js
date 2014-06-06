@@ -140,6 +140,12 @@ var CronJob = require('cron').CronJob,
 						} else {
 							console.log('Successfully deployed');
 						}
+
+						if(!mergedOptions.saveImageLocally) {
+							try {
+								fs.unlinkSync(mergedOptions.imageName);
+							} catch(err) {}
+						}
 					});
 
 				} else {
@@ -152,6 +158,7 @@ var CronJob = require('cron').CronJob,
 		'timeZone': '',
 		'url': 'http://touchdown.media.yahoo.com:4080/console/?m_id=td-applet-scores',
 		'imageName': 'screenshot.png',
+		'saveImageLocally': false,
 		'host': 'playground.yahoofs.com',
 		'mobstorPath': '/gfranko/screenshot.png'
 	},

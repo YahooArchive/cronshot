@@ -2,7 +2,7 @@
   "name": "cronshot.js",
   "version": "0.0.0",
   "description": "Cron job to take web page screenshots",
-  "main": "index.js",
+  "main": "./cronshot.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -15,7 +15,6 @@
     "screenshot"
   ],
   "author": "",
-  "main": "./cronshot.js",
   "license": "ISC",
   "devDependencies": {
     "cron": "^1.0.4",
