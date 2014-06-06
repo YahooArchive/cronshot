@@ -17,6 +17,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "colors": "^0.6.2",
     "cron": "^1.0.4",
     "mobstor": "*",
     "pageres": "*"

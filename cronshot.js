@@ -2,6 +2,7 @@ var CronJob = require('cron').CronJob,
 	webshot = require('./libs/webshot/lib/webshot'),
 	fs = require('fs'),
 	mobstor = require('mobstor'),
+	colors = require('colors'),
 	utils = {
         'isObject': function(obj) {
             if(!obj) {
@@ -136,9 +137,9 @@ var CronJob = require('cron').CronJob,
 					client.storeFile(mergedOptions.mobstorPath, content, function mobstorStoreFileCb(err) {
 						// skip 409 conflict issues since the asset was uploaded correctly
 						if (err && err.code !== 409) {
-							console.log('Failed');
+							console.log('Failed'.underline.red);
 						} else {
-							console.log('Successfully deployed');
+							console.log('Successfully deployed'.rainbow);
 						}
 
 						if(!mergedOptions.saveImageLocally) {
@@ -149,7 +150,7 @@ var CronJob = require('cron').CronJob,
 					});
 
 				} else {
-					console.log('error: ', err);
+					console.log('error: ', err + ''.underline.red);
 				}
 			});
 		},
@@ -169,18 +170,16 @@ var CronJob = require('cron').CronJob,
 				onComplete = obj.onComplete,
 				start = obj.start,
 				timeZone = obj.timeZone,
-				job = new CronJob({
-					'cronTime': cronPattern,
-					'onTick': onTick,
-					'onComplete': onComplete,
-					'start': start,
-					'timeZone': timeZone
-				});
+				job = new CronJob(cronPattern, (function fn() {
+					onTick();
+					return fn;
+				})(), onComplete, start, timeZone).start();
 		}
 	},
 	mergedOptions = {},
 	cronshot = module.exports = {
 		run: function(opts) {
+			console.log('Starting up cronshot.js...'.green);
 			// merge default options with any command line options and passed options
 			mergedOptions = utils.mergeOptions(defaultOptions, utils.mergeOptions((utils.isObject(opts) ? opts : {}), getCommandLineOptions()));
 			cron.run(mergedOptions);
