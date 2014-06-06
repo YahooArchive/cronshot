@@ -24,32 +24,23 @@ function saveToMobstor(options) {
   });
 }
 
-/*  onTickFactory: return onTick function for cronjob given cronshot options 
- *  ENSURES: returns a function that handles onTick events 
- */
-var onTickFactory = function(options) {
-  return function() {
-    webshot(options.url, options.imageName, options, function(err) {
-      if(err)
-        return utils.logError(err);
-      saveToMobstor(options);
-    });
-  };
+var onTick = function(options) {
+  webshot(options.url, options.imageName, options, function(err) {
+    if(err)
+      return utils.logError(err);
+    saveToMobstor(options);
+  });
 };
 
-/*  onCompleteFactory: return onComplete function for cronjob given 
- *    cronshot options 
- *  ENSURES: returns a function that handles onComplete events 
- */
-var onCompleteFactory = function(options) {
-  return utils.noop;
+var onComplete = function(options) {
+  // do nothing
 };
 
 var startCronJob = function(opt) {
   var job = new CronJob({
     'cronTime': opt.cronPattern,
-    'onTick': onTickFactory(opt),
-    'onComplete': onCompleteFactory(opt),
+    'onTick': _.partial(onTick, opt),
+    'onComplete': _.partial(onComplete, opt),
     'start': opt.start,
     'timeZone': opt.timeZone
   });
@@ -61,15 +52,6 @@ var startCapturing = function(opts) {
     utils.getCommandLineOptions(), 
     _.defaults((utils.isObject(opts) ? opts : {}), defaultOptions)
   );
-
-  /*
-  var options = utils.mergeOptions(defaultOptions, 
-    utils.mergeOptions(
-      (utils.isObject(opts) ? opts : {}), 
-      utils.getCommandLineOptions()
-    )
-  );
-  */
 
   utils.log('Starting to capture ' + options.url);
   startCronJob(options);
