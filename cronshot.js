@@ -1,5 +1,5 @@
 var CronJob = require('cron').CronJob;
-var webshot = require('./libs/webshot/lib/webshot');
+var webshot = require('webshot');
 var fs = require('fs');
 var mobstor = require('mobstor');
 var utils = require('./utils');
