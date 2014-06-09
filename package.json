@@ -22,6 +22,5 @@
     "mobstor": "*",
     "pageres": "*"
   },
-  "dependencies": {
-  }
+  "dependencies": {}
 }
