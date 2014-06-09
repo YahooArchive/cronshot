@@ -21,5 +21,7 @@
     "cron": "^1.0.4",
     "mobstor": "*",
     "pageres": "*"
+  },
+  "dependencies": {
   }
 }
