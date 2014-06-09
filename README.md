@@ -34,7 +34,7 @@ cronshot.js uses:
 ```javascript
 var cronshot = require('./cronshot');
 
-cronshot.startCapturing({
+cronshot.run({
 	'url': 'http://google.com',
 	'customCSS': 'body { background: blue !important; }'
 });
