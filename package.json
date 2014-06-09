@@ -22,7 +22,6 @@
     "pageres": "*"
   },
   "dependencies": {
-    "underscore": "^1.6.0",
-    "webshot": "^0.14.0"
+    "underscore": "^1.6.0"
   }
 }
