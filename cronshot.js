@@ -40,9 +40,7 @@ var onTickFactory = function(options) {
  *    cronshot options 
  *  ENSURES: returns a function that handles onComplete events 
  */
-var onCompleteFactory = function(options) {
-  return utils.noop;
-};
+var onCompleteFactory = utils.noop;
 
 var startCronJob = function(opt) {
   var job = new CronJob({
