@@ -94,7 +94,7 @@ var _takeScreenshot = function(status) {
         style.setAttribute('type', 'text/css');
         style.appendChild(text);
         document.body.appendChild(style);
-      }, options.customCSS, console);
+      }, options.customCSS);
     }
 
     // Render, clean up, and exit
