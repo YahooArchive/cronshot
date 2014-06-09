@@ -4,7 +4,6 @@ var fs = require('fs');
 var mobstor = require('mobstor');
 var utils = require('./utils');
 var defaultOptions = require('./config/default_options');
-var _ = require('underscore');
 
 function saveToMobstor(options) {
   var content = fs.createReadStream(options.imageName);
@@ -57,19 +56,12 @@ var startCronJob = function(opt) {
 
 var startCapturing = function(opts) {
   // merge default options with any command line options and passed options
-  var options = _.defaults(
-    utils.getCommandLineOptions(), 
-    _.defaults((utils.isObject(opts) ? opts : {}), defaultOptions)
-  );
-
-  /*
   var options = utils.mergeOptions(defaultOptions, 
     utils.mergeOptions(
       (utils.isObject(opts) ? opts : {}), 
       utils.getCommandLineOptions()
     )
   );
-  */
 
   utils.log('Starting to capture ' + options.url);
   startCronJob(options);
