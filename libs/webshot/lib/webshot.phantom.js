@@ -93,9 +93,11 @@ var _takeScreenshot = function(status) {
         var text  = document.createTextNode(customCSS);
         style.setAttribute('type', 'text/css');
         style.appendChild(text);
-        document.head.insertBefore(style, document.head.firstChild);
+        document.body.insertBefore(style, document.head.firstChild);
       }, options.customCSS);
     }
+
+    console.log('page.content', page.content);
 
     // Render, clean up, and exit
     if (!streaming) {

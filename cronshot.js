@@ -78,6 +78,54 @@ var CronJob = require('cron').CronJob,
 
 		return argsObj;
 	},
+	onTick = function() {
+		webshot(mergedOptions.url, mergedOptions.imageName, {
+			'screenSize': mergedOptions.screenSize,
+			'shotSize': mergedOptions.shotSize,
+			'shotOffset': mergedOptions.shotOffset,
+			'phantomPath': mergedOptions.phantomPath,
+			'phantomConfig': mergedOptions.phantomConfig,
+			'customHeaders': mergedOptions.customHeaders,
+			'defaultWhiteBackground': mergedOptions.defaultWhiteBackground,
+			'customCSS': mergedOptions.customCSS,
+			'quality': mergedOptions.quality,
+			'streamType': mergedOptions.streamType,
+			'siteType': mergedOptions.siteType,
+			'renderDelay': mergedOptions.renderDelay,
+			'timeout': mergedOptions.timeout,
+			'takeShotOnCallback': mergedOptions.takeShotOnCallback,
+			'errorIfStatusIsNot200': mergedOptions.errorIfStatusIsNot200
+		}, function(err) {
+			if(!err) {
+
+				var content = fs.createReadStream(mergedOptions.imageName),
+					config = {
+						host : mergedOptions.host
+					},
+					client;
+
+				client = mobstor.createClient(config);
+
+				client.storeFile(mergedOptions.mobstorPath, content, function mobstorStoreFileCb(err) {
+					// skip 409 conflict issues since the asset was uploaded correctly
+					if (err && err.code !== 409) {
+						console.log('Failed'.underline.red);
+					} else {
+						console.log('Successfully deployed'.rainbow);
+					}
+
+					if(!mergedOptions.saveImageLocally) {
+						try {
+							fs.unlinkSync(mergedOptions.imageName);
+						} catch(err) {}
+					}
+				});
+
+			} else {
+				console.log('error: ', err + ''.underline.red);
+			}
+		});
+	},
 	defaultOptions = {
 		'screenSize': {
 			'width': 1024,
@@ -105,55 +153,8 @@ var CronJob = require('cron').CronJob,
 		'timeout': 0,
 		'takeShotOnCallback': false,
 		'errorIfStatusIsNot200': false,
+		// This is every 10 seconds
 		'cronPattern': '*/10 * * * * *',
-		'onTick': function() {
-			webshot(mergedOptions.url, mergedOptions.imageName, {
-				'screenSize': mergedOptions.screenSize,
-				'shotSize': mergedOptions.shotSize,
-				'shotOffset': mergedOptions.shotOffset,
-				'phantomPath': mergedOptions.phantomPath,
-				'phantomConfig': mergedOptions.phantomConfig,
-				'customHeaders': mergedOptions.customHeaders,
-				'defaultWhiteBackground': mergedOptions.defaultWhiteBackground,
-				'customCSS': mergedOptions.customCSS,
-				'quality': mergedOptions.quality,
-				'streamType': mergedOptions.streamType,
-				'siteType': mergedOptions.siteType,
-				'renderDelay': mergedOptions.renderDelay,
-				'timeout': mergedOptions.timeout,
-				'takeShotOnCallback': mergedOptions.takeShotOnCallback,
-				'errorIfStatusIsNot200': mergedOptions.errorIfStatusIsNot200
-			}, function(err) {
-				if(!err) {
-
-					var content = fs.createReadStream(mergedOptions.imageName),
-						config = {
-							host : mergedOptions.host
-						},
-						client;
-
-					client = mobstor.createClient(config);
-
-					client.storeFile(mergedOptions.mobstorPath, content, function mobstorStoreFileCb(err) {
-						// skip 409 conflict issues since the asset was uploaded correctly
-						if (err && err.code !== 409) {
-							console.log('Failed'.underline.red);
-						} else {
-							console.log('Successfully deployed'.rainbow);
-						}
-
-						if(!mergedOptions.saveImageLocally) {
-							try {
-								fs.unlinkSync(mergedOptions.imageName);
-							} catch(err) {}
-						}
-					});
-
-				} else {
-					console.log('error: ', err + ''.underline.red);
-				}
-			});
-		},
 		'onComplete': utils.noop,
 		'start': true,
 		'timeZone': '',
@@ -166,7 +167,6 @@ var CronJob = require('cron').CronJob,
 	cron = {
 		'run': function(obj) {
 			var cronPattern = obj.cronPattern,
-				onTick = obj.onTick,
 				onComplete = obj.onComplete,
 				start = obj.start,
 				timeZone = obj.timeZone,
