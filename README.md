@@ -104,7 +104,7 @@ cronshot.run({
 // Will wait until every DOM element, that has a customCSS rule associated with it, is on the page
 'waitForCustomCSS': true,
 // Only applicable if the customCSS option is used
-// Will wait until x milleseconds inbetween tries to find customCSS associated DOM elements
+// Will wait x milleseconds inbetween tries to find customCSS associated DOM elements
 'waitForCustomCSSDelay': 2000,
 // Only applicable if the customCSS option is used
 // Will try x times to find a customCSS associated DOM element
