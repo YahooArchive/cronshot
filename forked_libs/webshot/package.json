@@ -31,9 +31,9 @@
     "phantomjs": "~1.9.7-1"
   },
   "devDependencies": {
+    "imagemagick": "git://github.com/rsms/node-imagemagick.git",
     "mocha": "*",
-    "should": "*",
-    "imagemagick": "git://github.com/rsms/node-imagemagick.git"
+    "should": "*"
   },
   "main": "./lib/webshot.js",
   "scripts": {

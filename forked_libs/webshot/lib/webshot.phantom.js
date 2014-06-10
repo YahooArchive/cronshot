@@ -8,6 +8,12 @@ var site = system.args[1];
 var path = system.args.length == 4 ? null : system.args[2];
 var streaming = ((system.args.length == 4 ? system.args[2] : system.args[3]) === 'true');
 var options = JSON.parse(system.args.length == 4 ? system.args[3] : system.args[4]);
+var isObject = function(obj) {
+  return Object.prototype.toString.call(obj) === '[object Object]'
+};
+var isEmptyObject = function(obj) {
+  return !isObject(obj) || !Object.keys(obj).length;
+};
 
 var failToStderr = function(message) {
     system.stderr.write(message);
@@ -21,7 +27,14 @@ page.viewportSize = {
 };
 
 // Capture JS errors and ignore them
-page.onError = function(msg, trace) {};
+page.onError = function(msg, trace) {
+  console.log('arguments', arguments);
+  console.log('is there an error: ', msg, trace);
+};
+
+page.onConsoleMessage = function (msg){
+    console.log(msg);     
+}
 
 if (options.errorIfStatusIsNot200) {
   page.onResourceReceived = function(response) {
@@ -88,13 +101,21 @@ var _takeScreenshot = function(status) {
 
     // Handle customCSS option
     if (options.customCSS) {
+      var cssText = '';
+      if(isObject(options.customCSS) && !isEmptyObject(options.customCSS)) {
+        Object.keys(options.customCSS).forEach(function(selector) {
+          cssText += selector + '{' + options.customCSS[selector] + '}';
+        });
+      } else {
+        cssText = options.customCSS;
+      }
       page.evaluate(function(customCSS) {
         var style = document.createElement('style');
         var text  = document.createTextNode(customCSS);
         style.setAttribute('type', 'text/css');
         style.appendChild(text);
         document.body.appendChild(style);
-      }, options.customCSS);
+      }, cssText);
     }
 
     // Render, clean up, and exit
