@@ -8,12 +8,6 @@ var site = system.args[1];
 var path = system.args.length == 4 ? null : system.args[2];
 var streaming = ((system.args.length == 4 ? system.args[2] : system.args[3]) === 'true');
 var options = JSON.parse(system.args.length == 4 ? system.args[3] : system.args[4]);
-var isObject = function(obj) {
-  return Object.prototype.toString.call(obj) === '[object Object]'
-};
-var isEmptyObject = function(obj) {
-  return !isObject(obj) || !Object.keys(obj).length;
-};
 
 var failToStderr = function(message) {
     system.stderr.write(message);
@@ -102,7 +96,7 @@ var _takeScreenshot = function(status) {
     // Handle customCSS option
     if (options.customCSS) {
       var cssText = '';
-      if(isObject(options.customCSS) && !isEmptyObject(options.customCSS)) {
+      if(optUtils.isObject(options.customCSS) && !optUtils.isEmptyObject(options.customCSS)) {
         Object.keys(options.customCSS).forEach(function(selector) {
           cssText += selector + '{' + options.customCSS[selector] + '}';
         });
@@ -117,6 +111,8 @@ var _takeScreenshot = function(status) {
         document.body.appendChild(style);
       }, cssText);
     }
+
+    // console.log('page.content', page.content);
 
     // Render, clean up, and exit
     if (!streaming) {
@@ -233,8 +229,8 @@ function pixelCount(page, dimension, value) {
 function buildEvaluationFn(fn, context) {
   return function() {
     var args = Array.prototype.slice.call(arguments);
-    page.evaluate(function(fn, context, args) {
+    page.evaluate(function(fn, context, args, options) {
       eval('(' + fn + ')').apply(context, args);
-    }, fn, context, args);
+    }, fn, context, args, options);
   };
 }

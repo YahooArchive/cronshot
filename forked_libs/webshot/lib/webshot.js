@@ -125,6 +125,44 @@ function processOptions(options, defaults) {
     options.onLoadFinished = options.onLoadFinished || options.script;
   }
 
+  if(!options.onLoadFinished && options.waitForCustomCSS) {
+    if(typeof options.customCSS === 'string') {
+      var convertedObject = {},
+        customCSSArray = options.customCSS.split('{').join('?').split('}');
+
+      customCSSArray.forEach(function(currentCSSRule) {
+        if(currentCSSRule) {
+          var selector = currentCSSRule.substring(0, currentCSSRule.indexOf('?')).trim(),
+            props = currentCSSRule.substring(currentCSSRule.indexOf('?') + 1, currentCSSRule.length).trim();
+
+          convertedObject[selector] = props;
+        }
+      });
+
+      options.customCSS = convertedObject;
+    }
+
+    if(!optUtils.isEmptyObject(options.customCSS)) {
+      options.onLoadFinished = function isPageReady(success, count) {
+        count = count || 0;
+        var allDOMElementsFound = true;
+        if(count < options.waitForCustomCSSTimeout) {
+          Object.keys(options.customCSS).forEach(function(selector) {
+            if(!document.querySelector(selector)) {
+              allDOMElementsFound = false;
+              setTimeout(function() {
+                isPageReady(++count);
+              }, options.waitForCustomCSSDelay);
+            }
+          });
+        }
+        if(allDOMElementsFound) {
+          window.callPhantom('takeShot');
+        }
+      };
+    }
+  }
+
   // Fill in defaults for undefined options
   var withDefaults = optUtils.mergeObjects(options, defaults);
 

@@ -16,6 +16,9 @@ exports.phantom = {
   }
 , defaultWhiteBackground: false
 , customCSS: ''
+, waitForCustomCSS: true
+, waitForCustomCSSTimeout: 5
+, waitForCustomCSSDelay: 2000
 , takeShotOnCallback: false
 , streamType: 'png'
 , siteType: 'url'
@@ -83,4 +86,24 @@ exports.filterObject = function filterObject(obj, keys) {
   });
 
   return filtered;
+};
+
+/*
+ * Determine if the object `obj` is an object
+ *
+ * @param (Object) obj
+ * @return (Boolean)
+ */
+var isObject = exports.isObject = function(obj) {
+  return Object.prototype.toString.call(obj) === '[object Object]'
+};
+
+/*
+ * Determine if the object `obj` is an empty object
+ *
+ * @param (Object) obj
+ * @return (Boolean)
+ */
+var isEmptyObject = exports.isEmptyObject = function(obj) {
+  return !isObject(obj) || !Object.keys(obj).length;
 };
