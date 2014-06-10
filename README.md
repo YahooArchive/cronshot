@@ -62,8 +62,8 @@ cronshot.run({
 'host': 'playground.yahoofs.com',
 // the mobster path that you would like to save to
 'mobstorPath': '/gfranko/screenshot.png',
-// User agent to use
-'userAgent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36',
+// User agent to use when creating the screenshot
+'userAgent': '',
 // The dimensions of the browser window
 'screenSize': {
 	'width': 1024,
