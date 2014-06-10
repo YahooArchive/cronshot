@@ -112,8 +112,6 @@ var _takeScreenshot = function(status) {
       }, cssText);
     }
 
-    // console.log('page.content', page.content);
-
     // Render, clean up, and exit
     if (!streaming) {
       page.render(path, {quality: options.quality});
