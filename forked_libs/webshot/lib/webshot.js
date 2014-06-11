@@ -143,6 +143,7 @@ function processOptions(options, defaults) {
     }
 
     if(!optUtils.isEmptyObject(options.customCSS)) {
+      options.takeShotOnCallback = true;
       options.onLoadFinished = function isPageReady(success, count) {
         count = count || 0;
         var allDOMElementsFound = true;

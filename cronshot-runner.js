@@ -9,6 +9,16 @@ cronshot.startCapturing();
 // 	// 'customCSS': '.NoLinkColor { background: red !important; }'
 // });
 
+// cronshot.startCapturing({
+// 	'screenSize': {
+// 		'width': 1024,
+// 		'height': 2000
+// 	},
+// 	'url': 'http://www.gregfranko.com'
+// 	// 'customCSS': '.js-applet { transiton: none !important; -webkit-transition: none !important; background: red !important; }'
+// 	// 'customCSS': '#at4-recommendedbox { background: blue !important; }'
+// });
+
 // capture with custom options
 // cronshot.startCapturing({
 //   // url: 'http://www.yahoo.com',
