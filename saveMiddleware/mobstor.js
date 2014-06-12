@@ -1,5 +1,6 @@
 var mobstor = require('mobstor'),
-  fs = require('fs');
+  fs = require('fs'),
+  colors = require('colors');
 
 module.exports = exports = function saveToMobstor(obj, callback) {
   var options = obj.options,
@@ -10,10 +11,13 @@ module.exports = exports = function saveToMobstor(obj, callback) {
     config = {
       'host' : host
     },
-    client;
+    client,
+    info = {
+      'name': 'mobstor'
+    }
 
     if(!host) {
-      throw new Error(console.log('No host option was provided.  Please add a host option and run again =)'));
+      throw new Error('No host option was provided.  Please add a host option and run again =)'.red);
     }
 
     client = mobstor.createClient(config);
@@ -22,10 +26,10 @@ module.exports = exports = function saveToMobstor(obj, callback) {
       // skip 409 conflict issues since the asset was uploaded correctly
       if (err && err.code !== 409) {
         // utils.logError(err);
-        callback(err);
+        callback(err, info);
       } 
       else {
-        callback(null);
+        callback(null, info);
       }
     });
 };

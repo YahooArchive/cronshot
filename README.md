@@ -18,6 +18,8 @@ cronshot.js uses:
  - Make sure you have [homebrew](http://brew.sh/) installed: `ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"`
  - Install PhantomJS: `brew update && brew install phantomjs`
 
+ - Install ImageMagick: `brew update && brew install homebrew install imagemagick`
+
 
 * **Install local dependencies**
  - `ynpm install`

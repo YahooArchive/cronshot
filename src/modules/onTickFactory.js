@@ -4,10 +4,12 @@
 var webshot = require('../../forked_libs/webshot/lib/webshot'),
   fs = require('fs'),
   utils = require('./utils'),
-  fileCleanUp = function(options, removeFile) {
+  fileCleanUp = function(options, info) {
     var host = options.host,
       path = options.path,
-      imageName = options.imageName;
+      imageName = options.imageName,
+      middlewareName = info.name || 'Unknown',
+      removeFile = info.removeFile || false;
 
     if(removeFile !== false) {
       try {
@@ -15,7 +17,7 @@ var webshot = require('../../forked_libs/webshot/lib/webshot'),
       } catch(err) {};
     }
 
-    console.log(('Successfully deployed to: ').green + (host + path + imageName).bold);
+    console.log(('Successfully used the ' + middlewareName + ' middleware: ').green + (host + path + imageName).bold);
   },
   saveMiddleware = function(obj) {
     var middleware = obj.middleware,
@@ -31,14 +33,18 @@ var webshot = require('../../forked_libs/webshot/lib/webshot'),
     } else if(!imageName) {
       throw new Error(utils.logError('No imageName option was provided.  Please add an imageName option and run again =)'));
     } else {
+      if(path && imageName) {
+        options.imageName = path.charAt(path.length - 1) === '/' ? imageName: '/' + imageName;
+      }
+
       middleware({
         'options': options,
         'readStream': readStream
-      }, function(err, removeFile) {
-        if(!err) {
-          fileCleanUp(options, removeFile);
-        } else if(err) {
-          throw new Error(utils.logError(err));
+      }, function(err, info) {
+        if(err) {
+          throw new Error(err);
+        } else {
+          fileCleanUp(options, info);
         }
       });
     }
@@ -52,13 +58,40 @@ module.exports = exports = function onTickFactory(options) {
   	 return utils.logError(err);
     }
 
-    if(saveMiddlewareOption && typeof saveMiddlewareOption === 'function') {
-      saveMiddleware({
-        'middleware': saveMiddlewareOption,
-        'lastMiddleware': true,
-        'options': options,
-        'readStream': readStream
-      });
+    if(saveMiddlewareOption) {
+      if(typeof saveMiddlewareOption === 'function') {
+        saveMiddleware({
+          'middleware': saveMiddlewareOption,
+          'lastMiddleware': true,
+          'options': options,
+          'readStream': readStream
+        });
+      } else if(utils.isObject(saveMiddleware) && saveMiddleware.middleware) {
+        saveMiddleware({
+          'middleware': middleware,
+          'lastMiddleware': true,
+          'options': utils.isObject(saveMiddleware.options) ? utils.mergeOptions(options, saveMiddleware.options) : options,
+          'readStream': readStream
+        });
+      } else if(utils.isArray(saveMiddlewareOption)) {
+        utils.each(saveMiddlewareOption, function(iterator, currentMiddleware) {
+          if(utils.isObject(currentMiddleware) && typeof currentMiddleware.middleware === 'function') {
+            saveMiddleware({
+              'middleware': currentMiddleware.middleware,
+              'lastMiddleware': (iterator === saveMiddlewareOption.length ? true : false),
+              'options': currentMiddleware.options && utils.isObject(currentMiddleware.options) ? utils.mergeOptions(options, currentMiddleware.options) : options,
+              'readStream': readStream
+            });
+          } else if(typeof currentMiddleware === 'function') {
+            saveMiddleware({
+              'middleware': currentMiddleware,
+              'lastMiddleware': (iterator === saveMiddlewareOption.length ? true : false),
+              'options': options,
+              'readStream': readStream
+            });
+          }
+        });
+      }
     } else {
       fileCleanUp(options);
     }
