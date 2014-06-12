@@ -31,6 +31,7 @@ module.exports = {
 	'url': '',
 	'imageName': 'screenshot.png',
 	'host': '',
+	'hostPath': '',
 	'path': '',
 	'waitForCustomCSS': true,
 	'waitForCustomCSSTimeout': 5,

@@ -11,10 +11,7 @@ var utils = require('./utils'),
     } else if(options.siteType === 'url' && !options.url) {
     	throw new Error(utils.logError('\n\nNo website URL was provided, which means a blank page would have been saved =(\n\nPlease add a url option and retry =)'))
     } else {
-    	if(options.path && options.imageName) {
-				options.imageName = options.path.charAt(options.path.length - 1) === '/' ? options.imageName: '/' + options.imageName;
-    	}
-      console.log(('Starting to capture: ').green + (options.url).bold);
+      console.log(('\n['+ new Date().toUTCString() + '] ').bold + ('Cronshot will begin according to your cron pattern').magenta);
       startCronJob(options);
     }
 	};

@@ -7,12 +7,12 @@ module.exports = exports = function saveToLocal(obj, callback) {
     content = obj.readStream,
     path = options.path,
     imageName = options.imageName,
+    fullPath = path + imageName,
     host = options.host,
     removeFile = false,
     info = {
       'name': 'graphicksmagick'
-    },
-    fullPath = path + imageName;
+    };
 
   try {
     imageMagick(content, fullPath)

@@ -5,7 +5,8 @@ module.exports = exports = function saveToLocal(obj, callback) {
     content = obj.readStream,
     path = options.path,
     imageName = options.imageName,
-    writeStream = fs.createWriteStream(path + imageName),
+    fullPath = path + imageName,
+    writeStream = fs.createWriteStream(fullPath),
     info = {
       'name': 'local'
     };

@@ -1,7 +1,7 @@
 cronshot.js
 ===========
 
-Node module that allows you to schedule cron jobs to take and store web page screenshots anywhere
+Node module that allows you to schedule cron jobs to take, alter, and store web page screenshots
 
 ## How
 

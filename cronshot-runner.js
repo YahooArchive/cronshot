@@ -5,21 +5,25 @@ var cronshot = require('./src/cronshot'),
     'mobstor': require('./saveMiddleware/mobstor')
   };
 
-// Mobstor example
+// Image Magick and Mobstor example
 cronshot.startCapturing({
+  // The URL of the website to take a screenshot of
   'url': 'http://touchdown.media.yahoo.com:4080/console/?m_id=td-applet-scores',
-  'saveMiddleware': [
-  {
-    'name': 'graphicsmagick',
-    'middleware': middleware.graphicsmagick,
-    'options': {
-      'path': __dirname
-    }
+  // Where to save the screen shot locally
+  'path': __dirname,
+  // Our middleware modules
+  'saveMiddleware': [{
+    // Function that does all the Image Magick stuff
+    'middleware': middleware.graphicsmagick
   }, {
+    // Function that does all of the mobstor stuff
     'middleware': middleware.mobstor,
+    // Options overrides specific to this middleware
     'options': {
+      // The Mobstor host URL
       'host': 'playground.yahoofs.com',
-      'path': '/gfranko/'
+      // Our relative host path (where we are saving the screenshot on playground.yahoofs.com)
+      'hostPath': '/gfranko/'
     }
   }]
 });

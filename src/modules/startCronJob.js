@@ -8,6 +8,7 @@ var CronJob = require('cron').CronJob,
 	onCompleteFactory = utils.noop,
 	startCronJob = module.exports = exports = function(options) {
 		var job = new CronJob(options.cronPattern, function fn() {
+			console.log(('\n['+ new Date().toUTCString() + '] ').bold + ('Starting to capture: ').rainbow + (options.url).underline);
 			onTickFactory(options);
 			return fn;
 		}, onCompleteFactory, options.start, options.timeZone);
