@@ -32,11 +32,21 @@ cronshot.js uses:
 **Passing Options via Code**
 
 ```javascript
-var cronshot = require('./cronshot');
+var cronshot = require('./src/cronshot');
 
-cronshot.run({
-	'url': 'http://google.com',
-	'customCSS': 'body { background: blue !important; }'
+// Mobstor example
+cronshot.startCapturing({
+  'url': 'http://touchdown.media.yahoo.com:4080/console/?m_id=td-applet-scores',
+  'host': 'playground.yahoofs.com',
+  'path': '/gfranko/',
+  'saveMiddleware': require('./saveMiddleware/mobstor')
+});
+
+// Save Local File Example
+cronshot.startCapturing({
+  'url': 'http://touchdown.media.yahoo.com:4080/console/?m_id=td-applet-scores',
+  'path': __dirname,
+  'saveMiddleware': require('./saveMiddleware/local')
 });
 ```
 
@@ -46,6 +56,18 @@ cronshot.run({
 
 **Note:** You can pass BOTH **code options** AND **command line options**. If you pass the same option via both methods, the command line option takes precedence.
 
+## Save Middleware
+
+The `saveMiddleware` option accepts a function that will save the screenshot to a desired location of your choice.
+
+Below are the current middleware functions available:
+
+`mobstor` - Saves to the Yahoo! Mobstor Cloud
+
+`local` - Saves to the local file system
+
+To see examples of how to write your own `saveMiddleware` adapter, look in the **saveMiddleware** folder.
+
 ## Options
 
 ```javascript
@@ -53,15 +75,15 @@ cronshot.run({
 // The default runs every 10 seconds
 'cronPattern': '*/10 * * * * *',
 // The webpage URL that you would like to take a screenshot of
-'url': 'http://touchdown.media.yahoo.com:4080/console/?m_id=td-applet-scores',
+'url': '',
 // The name of the image you would like to be saved
 'imageName': 'screenshot.png',
 // Whether or not you would like to save a copy of the screenshot image locally
 'saveImageLocally': false,
 // The base host that you would like to save to
-'host': 'playground.yahoofs.com',
-// the mobster path that you would like to save to
-'mobstorPath': '/gfranko/screenshot.png',
+'host': '',
+// the path that you would like to save to
+'path': '',
 // User agent to use when creating the screenshot
 'userAgent': '',
 // The dimensions of the browser window

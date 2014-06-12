@@ -1,31 +1,16 @@
-var cronshot = require('./cronshot');
+var cronshot = require('./src/cronshot');
 
-// capture with default options
-cronshot.startCapturing();
+// Mobstor example
+cronshot.startCapturing({
+  'url': 'http://touchdown.media.yahoo.com:4080/console/?m_id=td-applet-scores',
+  'host': 'playground.yahoofs.com',
+  'path': '/gfranko/',
+  'saveMiddleware': require('./saveMiddleware/mobstor')
+});
 
+// Save Local File Example
 // cronshot.startCapturing({
-// 	// 'userAgent': '',
-// 	// 'customCSS': '.SelectBox-Pick { background: blue; }'
-// 	// 'customCSS': '.NoLinkColor { background: red !important; }'
-// });
-
-// cronshot.startCapturing({
-// 	'screenSize': {
-// 		'width': 1024,
-// 		'height': 2000
-// 	},
-// 	'url': 'http://www.gregfranko.com'
-// 	// 'customCSS': '.js-applet { transiton: none !important; -webkit-transition: none !important; background: red !important; }'
-// 	// 'customCSS': '#at4-recommendedbox { background: blue !important; }'
-// });
-
-// capture with custom options
-// cronshot.startCapturing({
-//   // url: 'http://www.yahoo.com',
-//   // url: 'http://www.google.com',
-//   // renderDelay: 10000
-//   // customCSS: 'body { background: blue !important }'
-//   // customCSS: {
-//   // 	'#main': 'background: red !important'
-//   // },
+//   'url': 'http://touchdown.media.yahoo.com:4080/console/?m_id=td-applet-scores',
+//   'path': __dirname,
+//   'saveMiddleware': require('./saveMiddleware/local')
 // });

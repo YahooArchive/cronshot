@@ -28,13 +28,13 @@ module.exports = {
 	'cronPattern': '*/10 * * * * *',
 	'start': true,
 	'timeZone': '',
-	'url': 'http://touchdown.media.yahoo.com:4080/console/?m_id=td-applet-scores',
+	'url': '',
 	'imageName': 'screenshot.png',
-	'mobstorHost': 'playground.yahoofs.com',
-	'mobstorPath': '/gfranko/screenshot.png',
-	'saveImageLocally': false,
+	'host': '',
+	'path': '',
 	'waitForCustomCSS': true,
 	'waitForCustomCSSTimeout': 5,
 	'waitForCustomCSSDelay': 2000,
-	'userAgent': ''
+	'userAgent': '',
+	'saveMiddleware': null
 };

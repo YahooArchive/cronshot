@@ -78,13 +78,13 @@ var colors = require('colors'),
     'noop': function noop() {},
     'makeLog': function(info, color) {
       color = color || 'green';
-      console.log(('['+ new Date().toUTCString() + '] ').bold + info[color]);
+      return console.log(('\n['+ new Date().toUTCString() + '] ').bold + info[color] + '\n');
     },
     'logError': function(msg, color) {
       color = color || 'red';
-      utils.makeLog('Error', msg, color);
+      return utils.makeLog(msg, color);
     },
     'log': function(msg, color) {
-      utils.makeLog(msg, color);
+      return utils.makeLog(msg, color);
     }
   };
