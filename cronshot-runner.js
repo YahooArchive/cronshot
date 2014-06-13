@@ -1,14 +1,14 @@
 var cronshot = require('./src/cronshot'),
   middleware = {
-    'local': require('./saveMiddleware/local'),
-    'graphicsmagick': require('./saveMiddleware/graphicsmagick'),
-    'mobstor': require('./saveMiddleware/mobstor')
+    'local': require('./middleware/local'),
+    'graphicsmagick': require('./middleware/graphicsmagick'),
+    'mobstor': require('./middleware/mobstor')
   };
 
 // Image Magick and Mobstor example
 cronshot.startCapturing({
   // The URL of the website to take a screenshot of
-  'url': 'http://yahoo.com',
+  'url': 'http://touchdown.media.yahoo.com:4080/console/?m_id=td-applet-scores',
   // Where to save the screen shot locally
   'path': __dirname,
   // Our middleware modules
