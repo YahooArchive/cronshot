@@ -9,7 +9,10 @@ cronshot.js uses:
 
 - A custom fork of [node-webshot](https://github.com/brenden/node-webshot) to take screenshots using [Phantom JS](https://github.com/ariya/phantomjs)
 - [node-cron](https://github.com/ncb000gt/node-cron) to schedule screenshots
-- [mobstor](http://devel.corp.yahoo.com/ynodejs/mobstor/Client.html) to store the screenshots on mobstor
+
+cronshot.js provides middleware plugins:
+
+- [mobstor](http://devel.corp.yahoo.com/ynodejs/mobstor/Client.html) to store screenshots on mobstor
 
 
 ## Quick Start
@@ -18,7 +21,9 @@ cronshot.js uses:
  - Make sure you have [homebrew](http://brew.sh/) installed: `ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"`
  - Install PhantomJS: `brew update && brew install phantomjs`
 
- - Install ImageMagick: `brew update && brew install homebrew install imagemagick`
+* **Install ImageMagick**
+
+ - `brew update && brew install homebrew install imagemagick`
 
 
 * **Install local dependencies**
