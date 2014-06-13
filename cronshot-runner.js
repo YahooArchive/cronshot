@@ -1,8 +1,8 @@
 var cronshot = require('./src/cronshot'),
   middleware = {
-    'local': require('./middleware/local'),
-    'graphicsmagick': require('./middleware/graphicsmagick'),
-    'mobstor': require('./middleware/mobstor')
+    'local': require('./saveMiddleware/local'),
+    'imagemagick': require('./saveMiddleware/imagemagick'),
+    'mobstor': require('./saveMiddleware/mobstor')
   };
 
 // Image Magick and Mobstor example
@@ -14,7 +14,7 @@ cronshot.startCapturing({
   // Our middleware modules
   'saveMiddleware': [{
     // Function that does all the Image Magick stuff
-    'middleware': middleware.graphicsmagick
+    'middleware': middleware.imagemagick
   }, {
     // Function that does all of the mobstor stuff
     'middleware': middleware.mobstor,
@@ -23,7 +23,7 @@ cronshot.startCapturing({
       // The Mobstor host URL
       'host': 'playground.yahoofs.com',
       // Our relative host path (where we are saving the screenshot on playground.yahoofs.com)
-      'hostPath': '/gfranko/'
+      'hostPath': '/gfranko'
     }
   }]
 });
