@@ -8,11 +8,12 @@ Node module that allows you to schedule cron jobs to take, alter, and store web 
 cronshot.js uses:
 
 - A custom fork of [node-webshot](https://github.com/brenden/node-webshot) to take screenshots using [Phantom JS](https://github.com/ariya/phantomjs)
+
 - [node-cron](https://github.com/ncb000gt/node-cron) to schedule screenshots
 
-cronshot.js provides middleware plugins:
-
 - [mobstor](http://devel.corp.yahoo.com/ynodejs/mobstor/Client.html) to store screenshots on mobstor
+
+- [gm](https://github.com/aheckmann/gm) to programatically use [ImageMagick](http://www.imagemagick.org/) to manipulate the screenshots
 
 
 ## Quick Start
@@ -41,15 +42,40 @@ cronshot.js provides middleware plugins:
 ```javascript
 var cronshot = require('./src/cronshot');
 
-// Mobstor example
+// Image Magick and Mobstor Screenshot Example
+// -------------------------------------------
+
+// Takes a screenshot of a TD applet,
+// converts the screenshot to be a transparent image using Image Magick,
+// and stores the transparent image on Mobstor
+
 cronshot.startCapturing({
+  // The URL of the website to take a screenshot of
   'url': 'http://touchdown.media.yahoo.com:4080/console/?m_id=td-applet-scores',
-  'host': 'playground.yahoofs.com',
-  'path': '/gfranko/',
-  'saveMiddleware': require('./saveMiddleware/mobstor')
+  // Where to save the screen shot locally
+  'path': __dirname,
+  // Our middleware modules
+  'saveMiddleware': [{
+    // Function that does all the Image Magick stuff
+    'middleware': middleware.graphicsmagick
+  }, {
+    // Function that does all of the mobstor stuff
+    'middleware': middleware.mobstor,
+    // Options overrides specific to this middleware
+    'options': {
+      // The Mobstor host URL
+      'host': 'playground.yahoofs.com',
+      // Our relative host path (where we are saving the screenshot on playground.yahoofs.com)
+      'hostPath': '/gfranko/'
+    }
+  }]
 });
 
 // Save Local File Example
+// -----------------------
+
+// Takes a screenshot of a TD applet,
+// and saves the screenshot in the current local directory
 cronshot.startCapturing({
   'url': 'http://touchdown.media.yahoo.com:4080/console/?m_id=td-applet-scores',
   'path': __dirname,
@@ -63,11 +89,13 @@ cronshot.startCapturing({
 
 **Note:** You can pass BOTH **code options** AND **command line options**. If you pass the same option via both methods, the command line option takes precedence.
 
-## Save Middleware
+## Middleware
 
-The `saveMiddleware` option accepts a function that will save the screenshot to a desired location of your choice.
+The `saveMiddleware` option accepts a function that can be used to manipulate/save a screenshot image.
 
 Below are the current middleware functions available:
+
+`imagemagick` - Converts a screenshot to a transparent image
 
 `mobstor` - Saves to the Yahoo! Mobstor Cloud
 
