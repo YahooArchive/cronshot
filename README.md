@@ -24,7 +24,7 @@ cronshot.js uses:
 
 * **Install ImageMagick**
 
- - `brew update && brew install homebrew install imagemagick`
+ - `brew update && brew install imagemagick`
 
 
 * **Install local dependencies**
