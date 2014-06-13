@@ -8,7 +8,7 @@ var cronshot = require('./src/cronshot'),
 // Image Magick and Mobstor example
 cronshot.startCapturing({
   // The URL of the website to take a screenshot of
-  'url': 'http://touchdown.media.yahoo.com:4080/console/?m_id=td-applet-scores',
+  'url': 'http://yahoo.com',
   // Where to save the screen shot locally
   'path': __dirname,
   // Our middleware modules
