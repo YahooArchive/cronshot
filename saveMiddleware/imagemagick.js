@@ -15,8 +15,9 @@ module.exports = exports = function saveToLocal(obj, callback) {
     };
 
   try {
-    imageMagick(content, fullPath)
+    imageMagick(content)
       // .implode(-1.2)
+      .trim()
       .fuzz('10%')
       .transparent('#FFFFFF')
       .write(fullPath, function(err) {

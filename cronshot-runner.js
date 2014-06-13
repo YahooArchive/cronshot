@@ -23,7 +23,7 @@ cronshot.startCapturing({
       // The Mobstor host URL
       'host': 'playground.yahoofs.com',
       // Our relative host path (where we are saving the screenshot on playground.yahoofs.com)
-      'hostPath': '/gfranko'
+      'hostPath': '/testing'
     }
   }]
 });
