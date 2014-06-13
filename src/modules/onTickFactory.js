@@ -7,7 +7,6 @@ var webshot = require('../../forked_libs/webshot/lib/webshot'),
   saveMiddleware = function(obj, callback) {
     callback = callback || function() {};
     var middleware = obj.middleware,
-      lastMiddleware = obj.lastMiddleware,
       readStream = obj.readStream,
       options = obj.options,
       host = options.host,
@@ -53,6 +52,8 @@ module.exports = exports = function onTickFactory(options) {
           'lastMiddleware': true,
           'options': options,
           'readStream': readStream
+        }, function() {
+          console.log(('\n['+ new Date().toUTCString() + '] ').bold + ('Successfully used all middleware! ').green.bold);      
         });
       } else if(utils.isObject(saveMiddleware) && saveMiddleware.middleware) {
         saveMiddleware({
@@ -60,18 +61,20 @@ module.exports = exports = function onTickFactory(options) {
           'lastMiddleware': true,
           'options': utils.isObject(saveMiddleware.options) ? utils.mergeOptions(options, saveMiddleware.options) : options,
           'readStream': readStream
+        }, function() {
+          console.log(('\n['+ new Date().toUTCString() + '] ').bold + ('Successfully used all middleware! ').green.bold);      
         });
       } else if(utils.isArray(saveMiddlewareOption) && saveMiddlewareOption.length) {
         (function loop(iterator) {
           iterator = iterator || 0;
           var currentMiddleware = saveMiddlewareOption[iterator];
           if(!currentMiddleware) {
+            console.log(('\n['+ new Date().toUTCString() + '] ').bold + ('Successfully used all middleware! ').green.bold);      
             return;
           }
           if(utils.isObject(currentMiddleware) && typeof currentMiddleware.middleware === 'function') {
             saveMiddleware({
               'middleware': currentMiddleware.middleware,
-              'lastMiddleware': (iterator === saveMiddlewareOption.length ? true : false),
               'options': currentMiddleware.options && utils.isObject(currentMiddleware.options) ? utils.mergeOptions(options, currentMiddleware.options) : options,
               'readStream': readStream
             }, function() {
@@ -80,7 +83,6 @@ module.exports = exports = function onTickFactory(options) {
           } else if(typeof currentMiddleware === 'function') {
             saveMiddleware({
               'middleware': currentMiddleware,
-              'lastMiddleware': (iterator === saveMiddlewareOption.length ? true : false),
               'options': options,
               'readStream': readStream
             }, function() {
