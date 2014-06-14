@@ -82,7 +82,7 @@ cronshot.startCapturing({
 });
 ```
 
-** Save An Image To The Local Filesystem **
+**Save An Image To The Local Filesystem**
 
 ```javascript
 var cronshot = require('./src/cronshot');
