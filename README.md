@@ -15,6 +15,8 @@ cronshot.js uses:
 
 - [gm](https://github.com/aheckmann/gm) to programatically use [ImageMagick](http://www.imagemagick.org/) to manipulate the screenshots
 
+- [async](https://github.com/caolan/async) to allow more than one screenshot cron job to be run in parallel
+
 
 ## Quick Start
 
@@ -37,7 +39,7 @@ cronshot.js uses:
 
 ## Examples
 
-**Passing Options via Code**
+**Make an Image Transparent and Save To Mobstor**
 
 ```javascript
 var cronshot = require('./src/cronshot');
@@ -49,6 +51,7 @@ var cronshot = require('./src/cronshot');
 // converts the screenshot to be a transparent image using Image Magick,
 // and stores the transparent image on Mobstor
 
+// Image Magick and Mobstor example
 cronshot.startCapturing({
   // The URL of the website to take a screenshot of
   'url': 'http://touchdown.media.yahoo.com:4080/console/?m_id=td-applet-scores',
@@ -57,7 +60,14 @@ cronshot.startCapturing({
   // Our middleware modules
   'saveMiddleware': [{
     // Function that does all the Image Magick stuff
-    'middleware': middleware.graphicsmagick
+    'middleware': middleware.imagemagick,
+    'gmCommands': [{
+      'method': 'trim',
+      'args': []
+    }, {
+      'method': 'transparent',
+      'args': ['#FFFFFF']
+    }]
   }, {
     // Function that does all of the mobstor stuff
     'middleware': middleware.mobstor,
@@ -66,10 +76,16 @@ cronshot.startCapturing({
       // The Mobstor host URL
       'host': 'playground.yahoofs.com',
       // Our relative host path (where we are saving the screenshot on playground.yahoofs.com)
-      'hostPath': '/gfranko/'
+      'hostPath': '/testing'
     }
   }]
 });
+```
+
+** Save An Image To The Local Filesystem **
+
+```javascript
+var cronshot = require('./src/cronshot');
 
 // Save Local File Example
 // -----------------------
@@ -83,6 +99,29 @@ cronshot.startCapturing({
 });
 ```
 
+**Run One Or More Cron Jobs In Parallel**
+
+```javascript
+var cronshot = require('./src/cronshot');
+
+// Save Local Files Example
+// -----------------------
+
+// Takes a screenshot of a TD applet,
+// and saves the screenshot in the current local directory
+cronshot.startCapturing([{
+  'url': 'http://touchdown.media.yahoo.com:4080/console/?m_id=td-applet-scores',
+  'path': __dirname,
+  'imageName': 'screenshot.png',
+  'saveMiddleware': require('./saveMiddleware/local')
+}, {
+  'url': 'http://yahoo.com',
+  'path': __dirname,
+  'imageName': 'screenshot1.png',
+  'saveMiddleware': require('./saveMiddleware/local')
+}]);
+```
+
 **Passing Options via Command Line**
 
 `node cronshot-runner.js --customCSS 'body { background: blue !important; }' --url 'http://google.com'`
@@ -91,11 +130,11 @@ cronshot.startCapturing({
 
 ## Middleware
 
-The `saveMiddleware` option accepts a function that can be used to manipulate/save a screenshot image.
+The `saveMiddleware` option accepts one or more functions that can be used to manipulate/save a screenshot image.
 
 Below are the current middleware functions available:
 
-`imagemagick` - Converts a screenshot to a transparent image
+`imagemagick` - Manipulates a screenshot and saves the result to the local filesystem (accepts a `gmCommands` option that allows you to pass one or more commands)
 
 `mobstor` - Saves to the Yahoo! Mobstor Cloud
 

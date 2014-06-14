@@ -15,9 +15,9 @@ var webshot = require('../../forked_libs/webshot/lib/webshot'),
       imageName = options.imageName;
 
     if(!path) {
-      throw new Error(utils.logError('No path option was provided. Please add a path option and run again =)'));
+      utils.logError('No path option was provided. Please add a path option and run again =)');
     } else if(!imageName) {
-      throw new Error(utils.logError('No imageName option was provided.  Please add an imageName option and run again =)'));
+      utils.logError('No imageName option was provided.  Please add an imageName option and run again =)');
     } else {
       if(path && imageName) {
         options.imageName = imageName = path.charAt(path.length - 1) === '/' || imageName.charAt(0) === '/' ? imageName: '/' + imageName;
@@ -28,7 +28,7 @@ var webshot = require('../../forked_libs/webshot/lib/webshot'),
         'readStream': readStream
       }, function(err, info) {
         if(err) {
-          throw new Error(err);
+          utils.logError(err);
         } else {
           console.log(('\n['+ new Date().toUTCString() + '] ').bold + ('Successfully used the ' + info.name + ' middleware: ').green + (host + (hostPath || path) + imageName).underline);
           callback();

@@ -14,7 +14,14 @@ cronshot.startCapturing({
   // Our middleware modules
   'saveMiddleware': [{
     // Function that does all the Image Magick stuff
-    'middleware': middleware.imagemagick
+    'middleware': middleware.imagemagick,
+    'gmCommands': [{
+      'method': 'trim',
+      'args': []
+    }, {
+      'method': 'transparent',
+      'args': ['#FFFFFF']
+    }]
   }, {
     // Function that does all of the mobstor stuff
     'middleware': middleware.mobstor,

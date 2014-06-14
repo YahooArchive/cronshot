@@ -11,22 +11,35 @@ module.exports = exports = function saveToLocal(obj, callback) {
     host = options.host,
     removeFile = false,
     info = {
-      'name': 'graphicksmagick'
-    };
+      'name': 'imagemagick'
+    },
+    gmCommands = options.gmCommands,
+    imageMagickContent = {};
 
   try {
-    imageMagick(content)
-      // .implode(-1.2)
-      .trim()
-      .fuzz('10%')
-      .transparent('#FFFFFF')
-      .write(fullPath, function(err) {
-        if(err) {
-          callback(err, info);
-        } else {
-          callback(null, info);
+    imageMagickContent = imageMagick(content);
+    if(Array.isArray(gmCommands) && gmCommands.length) {
+      gmCommands.forEach(function(currentCommand) {
+        currentCommand = currentCommand || {};
+        var method = currentCommand.method,
+          args = currentCommand.args || [];
+
+        if(method) {
+          if(args.length > 1) {
+            imageMagickContent[method].apply(imageMagickContent, args.join(','));
+          } else {
+            imageMagickContent[method].call(imageMagickContent, args.join(','));
+          }
         }
       });
+    }
+    imageMagickContent.write(fullPath, function(err) {
+      if(err) {
+        callback(err, info);
+      } else {
+        callback(null, info);
+      }
+    });
   } catch(e) {
     callback(e, info);
   }
