@@ -60,7 +60,7 @@ cronshot.startCapturing({
   // Our middleware modules
   'saveMiddleware': [{
     // Function that does all the Image Magick stuff
-    'middleware': middleware.imagemagick,
+    'middleware': require('./saveMiddleware/imagemagick'),
     'gmCommands': [{
       'method': 'trim',
       'args': []
@@ -107,8 +107,8 @@ var cronshot = require('./src/cronshot');
 // Save Local Files Example
 // -----------------------
 
-// Takes a screenshot of a TD applet,
-// and saves the screenshot in the current local directory
+// Takes a screenshot of a TD applet and yahoo.com,
+// and saves both screenshots in the current local directory
 cronshot.startCapturing([{
   'url': 'http://touchdown.media.yahoo.com:4080/console/?m_id=td-applet-scores',
   'path': __dirname,
