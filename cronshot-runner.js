@@ -11,17 +11,29 @@ cronshot.startCapturing({
   'url': 'http://touchdown.media.yahoo.com:4080/console/?m_id=td-applet-scores',
   // Where to save the screen shot locally
   'path': __dirname,
+  //'customCSS' : '.js-applet { background: #ABC; transition: none; -webkit-transition: none; }',
   // Our middleware modules
   'saveMiddleware': [{
     // Function that does all the Image Magick stuff
     'middleware': middleware.imagemagick,
-    'gmCommands': [{
-      'method': 'trim',
-      'args': []
-    }, {
-      'method': 'transparent',
-      'args': ['#FFFFFF']
-    }]
+    'options': {
+      'gmCommands': [{
+        'method': 'trim',
+        'args': []
+      }, {
+        'method': 'channel',
+        'args': ["Opacity"]
+      }, {
+        'method': 'fill',
+        'args': ["rgba(255, 255, 255, 0.2)"]
+      }, {
+        'method': 'opaque',
+        'args': ["#FFF"]
+      }, {
+        'method': 'quality',
+        'args': [100]
+      }]
+    }
   }, {
     // Function that does all of the mobstor stuff
     'middleware': middleware.mobstor,
