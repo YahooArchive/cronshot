@@ -27,7 +27,7 @@ cronshot.js uses:
 
 * **Install ImageMagick**
 
-_Note:_ This is only required if you would like to use the Image Magick middleware
+ * _Note:_ This is only required if you would like to use the Image Magick middleware
 
  - `brew update && brew install imagemagick`
 
