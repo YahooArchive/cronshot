@@ -219,15 +219,6 @@ To see examples of how to write your own `saveMiddleware` adapter, look in the *
 'defaultWhiteBackground': true,
 // When taking the screenshot, adds custom CSS rules if defined
 'customCSS': '',
-// Only applicable if the customCSS option is used
-// Will wait until every DOM element, that has a customCSS rule associated with it, is on the page
-'waitForCustomCSS': true,
-// Only applicable if the customCSS option is used
-// Will wait x milleseconds inbetween tries to find customCSS associated DOM elements
-'waitForCustomCSSDelay': 2000,
-// Only applicable if the customCSS option is used
-// Will try x times to find a customCSS associated DOM element
-'waitForCustomCSSTimeout': 5,
 // JPEG compression quality.
 // A higher number will look better, but creates a larger file.
 // Quality setting has no effect when streaming.
