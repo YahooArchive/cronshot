@@ -33,9 +33,6 @@ module.exports = {
 	'host': '',
 	'hostPath': '',
 	'path': '',
-	'waitForCustomCSS': true,
-	'waitForCustomCSSTimeout': 5,
-	'waitForCustomCSSDelay': 2000,
 	'userAgent': '',
 	'saveMiddleware': null
 };
