@@ -7,7 +7,7 @@ Node module that allows you to schedule cron jobs to take, alter, and store web 
 
 cronshot.js uses:
 
-- A custom fork of [node-webshot](https://github.com/brenden/node-webshot) to take screenshots using [Phantom JS](https://github.com/ariya/phantomjs)
+- [node-webshot](https://github.com/brenden/node-webshot) to take screenshots using [Phantom JS](https://github.com/ariya/phantomjs)
 
 - [node-cron](https://github.com/ncb000gt/node-cron) to schedule screenshots
 
@@ -41,7 +41,7 @@ _Note:_ This is only required if you would like to use the Image Magick middlewa
 
 ## Examples
 
-**Make an Image Transparent and Save To Mobstor**
+**Create an Image Transparent and Save To Mobstor Every 10 seconds**
 
 ```javascript
 var cronshot = require('./src/cronshot');
@@ -86,7 +86,7 @@ cronshot.startCapturing({
 });
 ```
 
-**Save An Image To The Local Filesystem**
+**Save An Image To The Local Filesystem Every 10 seconds**
 
 ```javascript
 var cronshot = require('./src/cronshot');
@@ -99,6 +99,24 @@ var cronshot = require('./src/cronshot');
 cronshot.startCapturing({
   'url': 'http://touchdown.media.yahoo.com:4080/console/?m_id=td-applet-scores',
   'path': __dirname,
+  'saveMiddleware': require('./saveMiddleware/local')
+});
+```
+
+**Save An Image To The Local Filesystem One Time Immediately**
+
+```javascript
+var cronshot = require('./src/cronshot');
+
+// Save Local File Example
+// -----------------------
+
+// Takes a screenshot of a TD applet,
+// and saves the screenshot in the current local directory
+cronshot.startCapturing({
+  'url': 'http://touchdown.media.yahoo.com:4080/console/?m_id=td-applet-scores',
+  'path': __dirname,
+  'cronPattern': '',
   'saveMiddleware': require('./saveMiddleware/local')
 });
 ```
