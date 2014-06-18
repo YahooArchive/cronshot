@@ -26,6 +26,8 @@ cronshot.js uses:
 
 * **Install ImageMagick**
 
+_Note:_ This is only required if you would like to use the Image Magick middleware
+
  - `brew update && brew install imagemagick`
 
 
@@ -61,24 +63,26 @@ cronshot.startCapturing({
   'saveMiddleware': [{
     // Function that does all the Image Magick stuff
     'middleware': require('./saveMiddleware/imagemagick'),
-    'gmCommands': [{
-      'method': 'trim',
-      'args': []
-    }, {
-      'method': 'transparent',
-      'args': ['#FFFFFF']
-    }]
-  }, {
-    // Function that does all of the mobstor stuff
-    'middleware': middleware.mobstor,
-    // Options overrides specific to this middleware
     'options': {
-      // The Mobstor host URL
-      'host': 'playground.yahoofs.com',
-      // Our relative host path (where we are saving the screenshot on playground.yahoofs.com)
-      'hostPath': '/testing'
-    }
-  }]
+      'gmCommands': [{
+        'method': 'trim',
+        'args': []
+      }, {
+        'method': 'transparent',
+        'args': ['#FFFFFF']
+      }]
+    }, {
+      // Function that does all of the mobstor stuff
+      'middleware': middleware.mobstor,
+      // Options overrides specific to this middleware
+      'options': {
+        // The Mobstor host URL
+        'host': 'playground.yahoofs.com',
+        // Our relative host path (where we are saving the screenshot on playground.yahoofs.com)
+        'hostPath': '/testing'
+      }
+    }]
+  }
 });
 ```
 
@@ -147,6 +151,7 @@ To see examples of how to write your own `saveMiddleware` adapter, look in the *
 ```javascript
 // The time to fire off your job. This can be in the form of cron syntax or a JS Date object.
 // The default runs every 10 seconds
+// If you set this to false, then cronshot will only take one screen shot
 'cronPattern': '*/10 * * * * *',
 // The webpage URL that you would like to take a screenshot of
 'url': '',

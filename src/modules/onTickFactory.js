@@ -1,7 +1,7 @@
 /*  onTickFactory: return onTick function for cronjob given cronshot options 
  *  ENSURES: returns a function that handles onTick events 
  */
-var webshot = require('../../forked_libs/webshot/lib/webshot'),
+var webshot = require('webshot'),
   fs = require('fs'),
   utils = require('./utils'),
   saveMiddleware = function(obj, callback) {
