@@ -44,7 +44,7 @@ cronshot.js uses:
 
 ## Examples
 
-**Create an Image Transparent and Save To Mobstor Every 10 seconds**
+**Take and Save a Transparent Screenshot To Mobstor Every 10 seconds**
 
 ```javascript
 var cronshot = require('./src/cronshot');
@@ -89,7 +89,7 @@ cronshot.startCapturing({
 });
 ```
 
-**Save An Image To The Local Filesystem Every 10 seconds**
+**Take and Save A Screenshot To The Local Filesystem Every 10 seconds**
 
 ```javascript
 var cronshot = require('./src/cronshot');
@@ -106,7 +106,7 @@ cronshot.startCapturing({
 });
 ```
 
-**Save An Image To The Local Filesystem One Time Immediately**
+**Take and Save An Image To The Local Filesystem One Time**
 
 ```javascript
 var cronshot = require('./src/cronshot');
