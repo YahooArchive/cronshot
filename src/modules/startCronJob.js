@@ -1,10 +1,13 @@
+// startCronJob.js
+// ===============
+
+/* Copyright  2014 Yahoo! Inc.
+* Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
+*/
+
 var CronJob = require('cron').CronJob,
 	onTickFactory = require('./onTickFactory'),
 	utils = require('./utils'),
-	/*  onCompleteFactory: return onComplete function for cronjob given 
-	 *    cronshot options 
-	 *  ENSURES: returns a function that handles onComplete events 
-	 */
 	onCompleteFactory = utils.noop,
 	startCronJob = module.exports = exports = function(options) {
 		if(options.cronPattern) {

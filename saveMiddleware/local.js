@@ -1,3 +1,10 @@
+// local.js
+// ========
+
+/* Copyright  2014 Yahoo! Inc.
+* Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
+*/
+
 var fs = require('fs');
 
 module.exports = exports = function saveToLocal(obj, callback) {

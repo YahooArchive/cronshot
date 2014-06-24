@@ -1,6 +1,10 @@
-/*  onTickFactory: return onTick function for cronjob given cronshot options 
- *  ENSURES: returns a function that handles onTick events 
- */
+// onTickFactory.js
+// ================
+
+/* Copyright  2014 Yahoo! Inc.
+* Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
+*/
+
 var webshot = require('webshot'),
   fs = require('fs'),
   utils = require('./utils'),

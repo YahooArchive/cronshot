@@ -1,3 +1,10 @@
+// imagemagick.js
+// ==============
+
+/* Copyright  2014 Yahoo! Inc.
+* Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
+*/
+
 var gm = require('gm'),
   imageMagick = gm.subClass({ imageMagick: true }),
   fs = require('fs');

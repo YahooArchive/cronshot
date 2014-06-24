@@ -6,46 +6,46 @@ var cronshot = require('./src/cronshot'),
   };
 
 // Image Magick and Mobstor example
-cronshot.startCapturing({
-  // The URL of the website to take a screenshot of
-  'url': 'http://touchdown.media.yahoo.com:4080/console/?m_id=td-applet-scores',
-  // Where to save the screen shot locally
-  'path': __dirname,
-  //'customCSS' : '.js-applet { background: #ABC; transition: none; -webkit-transition: none; }',
-  // Our middleware modules
-  'saveMiddleware': [{
-    // Function that does all the Image Magick stuff
-    'middleware': middleware.imagemagick,
-    'options': {
-      'gmCommands': [{
-        'method': 'trim',
-        'args': []
-      }, {
-        'method': 'channel',
-        'args': ["Opacity"]
-      }, {
-        'method': 'fill',
-        'args': ["rgba(255, 255, 255, 0.2)"]
-      }, {
-        'method': 'opaque',
-        'args': ["#FFF"]
-      }, {
-        'method': 'quality',
-        'args': [100]
-      }]
-    }
-  }, {
-    // Function that does all of the mobstor stuff
-    'middleware': middleware.mobstor,
-    // Options overrides specific to this middleware
-    'options': {
-      // The Mobstor host URL
-      'host': 'playground.yahoofs.com',
-      // Our relative host path (where we are saving the screenshot on playground.yahoofs.com)
-      'hostPath': '/testing'
-    }
-  }]
-});
+// cronshot.startCapturing({
+//   // The URL of the website to take a screenshot of
+//   'url': 'http://touchdown.media.yahoo.com:4080/console/?m_id=td-applet-scores',
+//   // Where to save the screen shot locally
+//   'path': __dirname,
+//   //'customCSS' : '.js-applet { background: #ABC; transition: none; -webkit-transition: none; }',
+//   // Our middleware modules
+//   'saveMiddleware': [{
+//     // Function that does all the Image Magick stuff
+//     'middleware': middleware.imagemagick,
+//     'options': {
+//       'gmCommands': [{
+//         'method': 'trim',
+//         'args': []
+//       }, {
+//         'method': 'channel',
+//         'args': ["Opacity"]
+//       }, {
+//         'method': 'fill',
+//         'args': ["rgba(255, 255, 255, 0.2)"]
+//       }, {
+//         'method': 'opaque',
+//         'args': ["#FFF"]
+//       }, {
+//         'method': 'quality',
+//         'args': [100]
+//       }]
+//     }
+//   }, {
+//     // Function that does all of the mobstor stuff
+//     'middleware': middleware.mobstor,
+//     // Options overrides specific to this middleware
+//     'options': {
+//       // The Mobstor host URL
+//       'host': 'playground.yahoofs.com',
+//       // Our relative host path (where we are saving the screenshot on playground.yahoofs.com)
+//       'hostPath': '/testing'
+//     }
+//   }]
+// });
 
 // {
 //     'name': 'local',
@@ -56,8 +56,12 @@ cronshot.startCapturing({
 // },
 
 // Save Local File Example
-// cronshot.startCapturing({
-//   'url': 'http://touchdown.media.yahoo.com:4080/console/?m_id=td-applet-scores',
-//   'path': __dirname,
-//   'saveMiddleware': require('./saveMiddleware/local')
-// });
+cronshot.startCapturing({
+  'url': 'http://crunchedhunched.corp.ne1.yahoo.com:3000/console/?m_id=td-applet-fortyninersflickr&templateIndex=2&photoStartIndex=5&timeout=2500',
+  'path': __dirname,
+  'host': 'playground.yahoofs.com',
+  'hostPath': '/blahhh',
+  'cronPattern': '',
+  'saveMiddleware': [middleware.local, middleware.mobstor],
+  'customCSS': '* { whitespace: nowrap !important; }'
+});
