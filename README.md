@@ -233,6 +233,29 @@ To see examples of how to write your own `saveMiddleware` adapter, look in the *
 'errorIfStatusIsNot200': false
 ```
 
+## Credits
+
+cronshot.js would not have been possible without the help/inspiration of the following libraries/awesome people:
+
+ - [Brenden Kokoszka](https://github.com/brenden)'s [node-webshot](https://github.com/brenden/node-webshot)
+  * Takes screenshots using [Phantom JS](https://github.com/ariya/phantomjs)
+  * Copyright (c) Brenden Kokoszka, 2012 -  [MIT License](https://github.com/brenden/node-webshot#license)
+
+ - [Nick Campbell](https://github.com/ncb000gt)'s [node-cron](https://github.com/ncb000gt/node-cron)
+  * Schedules cron jobs
+  * Copyright (c) Brenden Kokoszka, 2010 -  [MIT License](https://github.com/ncb000gt/node-cron#license)
+
+ - [Caolan McMahon](https://github.com/caolan)'s [async](https://github.com/caolan/async)
+  * Async utilities for node and the browser
+  * Copyright (c) Caolan McMahon, 2010-2014 -  [MIT License](https://github.com/caolan/async/blob/master/LICENSE)
+
+### Optional
+
+ - [Aaron Heckmann](https://github.com/aheckmann)'s [gm](https://github.com/aheckmann/gm)
+  * GraphicsMagick for node
+  * Copyright (c) Aaron Heckmann, 2010 -  [MIT License](https://github.com/aheckmann/gm#license)
+
+
 ## Contributors
 
 - [Greg Franko](https://github.com/gfranko)
