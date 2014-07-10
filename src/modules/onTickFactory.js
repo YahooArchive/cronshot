@@ -41,12 +41,14 @@ var webshot = require('webshot'),
     }
   };
 
-module.exports = exports = function onTickFactory(options) {
+module.exports = exports = function onTickFactory(options, onCompleteCallback) {
   var saveMiddlewareOption = options.saveMiddleware;
 
   webshot(options.url, options, function(err, readStream) {
     if(err) {
-  	 return utils.logError(err);
+  	 utils.logError(err);
+     onCompleteCallback();
+     return;
     }
 
     if(saveMiddlewareOption) {
@@ -58,6 +60,7 @@ module.exports = exports = function onTickFactory(options) {
           'readStream': readStream
         }, function() {
           console.log(('\n['+ new Date().toUTCString() + '] ').bold + ('Successfully used all middleware! ').green.bold);      
+         onCompleteCallback();
         });
       } else if(utils.isObject(saveMiddleware) && saveMiddleware.middleware) {
         saveMiddleware({
@@ -67,6 +70,7 @@ module.exports = exports = function onTickFactory(options) {
           'readStream': readStream
         }, function() {
           console.log(('\n['+ new Date().toUTCString() + '] ').bold + ('Successfully used all middleware! ').green.bold);      
+         onCompleteCallback();
         });
       } else if(utils.isArray(saveMiddlewareOption) && saveMiddlewareOption.length) {
         (function loop(iterator) {
@@ -74,6 +78,7 @@ module.exports = exports = function onTickFactory(options) {
           var currentMiddleware = saveMiddlewareOption[iterator];
           if(!currentMiddleware) {
             console.log(('\n['+ new Date().toUTCString() + '] ').bold + ('Successfully used all middleware! ').green.bold);      
+           onCompleteCallback();
             return;
           }
           if(utils.isObject(currentMiddleware) && typeof currentMiddleware.middleware === 'function') {
