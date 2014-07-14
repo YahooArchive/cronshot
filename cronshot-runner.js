@@ -63,5 +63,8 @@ cronshot.startCapturing({
   'hostPath': '/blahhh',
   'cronPattern': '',
   'saveMiddleware': [middleware.local, middleware.mobstor],
-  'customCSS': '* { whitespace: nowrap !important; }'
+  'customCSS': '* { whitespace: nowrap !important; }',
+  'onCompleteCallback': function() {
+    console.log('All Done!');
+  }
 });

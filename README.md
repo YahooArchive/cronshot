@@ -230,7 +230,9 @@ To see examples of how to write your own `saveMiddleware` adapter, look in the *
 // window.callPhantom('takeShot');
 'takeShotOnCallback': false,
 // If the loaded page has a non-200 status code, don't take a screenshot, cause an error instead.
-'errorIfStatusIsNot200': false
+'errorIfStatusIsNot200': false,
+// An optional callback function when all screenshots have been taken 
+'onCompleteCallback': function() { }
 ```
 
 ## Credits
