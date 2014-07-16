@@ -20,8 +20,10 @@ var webshot = require('webshot'),
 
     if(!path) {
       utils.logError('No path option was provided. Please add a path option and run again =)');
+      callback(new Error('No path option was provided. Please add a path option and run again =)'));
     } else if(!imageName) {
       utils.logError('No imageName option was provided.  Please add an imageName option and run again =)');
+      callback(new Error('No imageName option was provided.  Please add an imageName option and run again =)'));
     } else {
       if(path && imageName) {
         options.imageName = imageName = path.charAt(path.length - 1) === '/' || imageName.charAt(0) === '/' ? imageName: '/' + imageName;
@@ -33,9 +35,10 @@ var webshot = require('webshot'),
       }, function(err, info) {
         if(err) {
           utils.logError(err);
+          callback(err);
         } else {
           console.log(('\n['+ new Date().toUTCString() + '] ').bold + ('Successfully used the ' + info.name + ' middleware: ').green + (host + (hostPath || path) + imageName).underline);
-          callback();
+          callback(null);
         }
       });
     }
@@ -47,7 +50,7 @@ module.exports = exports = function onTickFactory(options, onCompleteCallback) {
   webshot(options.url, options, function(err, readStream) {
     if(err) {
   	 utils.logError(err);
-     onCompleteCallback();
+     onCompleteCallback(err);
      return;
     }
 
@@ -58,9 +61,13 @@ module.exports = exports = function onTickFactory(options, onCompleteCallback) {
           'lastMiddleware': true,
           'options': options,
           'readStream': readStream
-        }, function() {
+        }, function(err) {
+          if(err) {
+            onCompleteCallback(err);
+            return;
+          }
           console.log(('\n['+ new Date().toUTCString() + '] ').bold + ('Successfully used all middleware! ').green.bold);      
-         onCompleteCallback();
+          onCompleteCallback(null);
         });
       } else if(utils.isObject(saveMiddleware) && saveMiddleware.middleware) {
         saveMiddleware({
@@ -68,9 +75,13 @@ module.exports = exports = function onTickFactory(options, onCompleteCallback) {
           'lastMiddleware': true,
           'options': utils.isObject(saveMiddleware.options) ? utils.mergeOptions(options, saveMiddleware.options) : options,
           'readStream': readStream
-        }, function() {
+        }, function(err) {
+          if(err) {
+            onCompleteCallback(err);
+            return;
+          }
           console.log(('\n['+ new Date().toUTCString() + '] ').bold + ('Successfully used all middleware! ').green.bold);      
-         onCompleteCallback();
+          onCompleteCallback(null);
         });
       } else if(utils.isArray(saveMiddlewareOption) && saveMiddlewareOption.length) {
         (function loop(iterator) {
@@ -78,7 +89,7 @@ module.exports = exports = function onTickFactory(options, onCompleteCallback) {
           var currentMiddleware = saveMiddlewareOption[iterator];
           if(!currentMiddleware) {
             console.log(('\n['+ new Date().toUTCString() + '] ').bold + ('Successfully used all middleware! ').green.bold);      
-           onCompleteCallback();
+            onCompleteCallback(null);
             return;
           }
           if(utils.isObject(currentMiddleware) && typeof currentMiddleware.middleware === 'function') {
@@ -86,7 +97,11 @@ module.exports = exports = function onTickFactory(options, onCompleteCallback) {
               'middleware': currentMiddleware.middleware,
               'options': currentMiddleware.options && utils.isObject(currentMiddleware.options) ? utils.mergeOptions(options, currentMiddleware.options) : options,
               'readStream': readStream
-            }, function() {
+            }, function(err) {
+              if(err) {
+                onCompleteCallback(err);
+                return;
+              }
               loop(++iterator);
             });
           } else if(typeof currentMiddleware === 'function') {
@@ -94,7 +109,11 @@ module.exports = exports = function onTickFactory(options, onCompleteCallback) {
               'middleware': currentMiddleware,
               'options': options,
               'readStream': readStream
-            }, function() {
+            }, function(err) {
+              if(err) {
+                onCompleteCallback(err);
+                return;
+              }
               loop(++iterator);
             });
           }

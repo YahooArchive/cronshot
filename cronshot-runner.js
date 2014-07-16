@@ -1,8 +1,7 @@
 var cronshot = require('./src/cronshot'),
   middleware = {
     'local': require('./saveMiddleware/local'),
-    'imagemagick': require('./saveMiddleware/imagemagick'),
-    'mobstor': require('./saveMiddleware/mobstor')
+    'imagemagick': require('./saveMiddleware/imagemagick')
   };
 
 // Image Magick and Mobstor example
@@ -35,36 +34,27 @@ var cronshot = require('./src/cronshot'),
 //       }]
 //     }
 //   }, {
-//     // Function that does all of the mobstor stuff
-//     'middleware': middleware.mobstor,
-//     // Options overrides specific to this middleware
-//     'options': {
-//       // The Mobstor host URL
-//       'host': 'playground.yahoofs.com',
-//       // Our relative host path (where we are saving the screenshot on playground.yahoofs.com)
-//       'hostPath': '/testing'
-//     }
-//   }]
-// });
-
-// {
-//     'name': 'local',
 //     'middleware': middleware.local,
 //     'options': {
 //       'path': __dirname
 //     }
-// },
+//   }]
+// });
 
 // Save Local File Example
 cronshot.startCapturing({
-  'url': 'http://crunchedhunched.corp.ne1.yahoo.com:3000/console/?m_id=td-applet-fortyninersflickr&templateIndex=2&photoStartIndex=5&timeout=2500',
+  'url': 'http://yahoo.com',
   'path': __dirname,
   'host': 'playground.yahoofs.com',
   'hostPath': '/blahhh',
   'cronPattern': '',
-  'saveMiddleware': [middleware.local, middleware.mobstor],
+  'saveMiddleware': middleware.local,
   'customCSS': '* { whitespace: nowrap !important; }',
-  'onCompleteCallback': function() {
+  'onCompleteCallback': function(err) {
+    if(err) {
+      console.error(err);
+      return;
+    }
     console.log('All Done!');
   }
 });
