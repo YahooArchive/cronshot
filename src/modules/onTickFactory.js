@@ -6,6 +6,7 @@
 */
 
 var webshot = require('webshot'),
+  async = require('async'),
   fs = require('fs'),
   utils = require('./utils'),
   saveMiddleware = function(obj, callback) {
@@ -84,41 +85,28 @@ module.exports = exports = function onTickFactory(options, onCompleteCallback) {
           onCompleteCallback(null);
         });
       } else if(utils.isArray(saveMiddlewareOption) && saveMiddlewareOption.length) {
-        (function loop(iterator) {
-          iterator = iterator || 0;
-          var currentMiddleware = saveMiddlewareOption[iterator];
-          if(!currentMiddleware) {
-            console.log(('\n['+ new Date().toUTCString() + '] ').bold + ('Successfully used all middleware! ').green.bold);      
-            onCompleteCallback(null);
-            return;
-          }
-          if(utils.isObject(currentMiddleware) && typeof currentMiddleware.middleware === 'function') {
-            saveMiddleware({
-              'middleware': currentMiddleware.middleware,
-              'options': currentMiddleware.options && utils.isObject(currentMiddleware.options) ? utils.mergeOptions(options, currentMiddleware.options) : options,
-              'readStream': readStream
-            }, function(err) {
-              if(err) {
-                onCompleteCallback(err);
-                return;
-              }
-              loop(++iterator);
-            });
-          } else if(typeof currentMiddleware === 'function') {
-            saveMiddleware({
-              'middleware': currentMiddleware,
-              'options': options,
-              'readStream': readStream
-            }, function(err) {
-              if(err) {
-                onCompleteCallback(err);
-                return;
-              }
-              loop(++iterator);
-            });
-          }
+        var funs = saveMiddlewareOption.map(function(currentMiddleware) {
+          return function(cb) {
+            if(utils.isObject(currentMiddleware) && typeof currentMiddleware.middleware === 'function') {
+              saveMiddleware({
+                'middleware': currentMiddleware.middleware,
+                'options': currentMiddleware.options && utils.isObject(currentMiddleware.options) ? utils.mergeOptions(options, currentMiddleware.options) : options,
+                'readStream': readStream
+              }, cb);
+            } else if(typeof currentMiddleware === 'function') {
+              saveMiddleware({
+                'middleware': currentMiddleware,
+                'options': options,
+                'readStream': readStream
+              }, cb);
+            }
+          };
+        });
 
-        }());
+        async.series(funs, function(err) {
+          console.log(('\n['+ new Date().toUTCString() + '] ').bold + ('Successfully used all middleware! ').green.bold);      
+          onCompleteCallback(err);
+        });
       }
     }
   });
