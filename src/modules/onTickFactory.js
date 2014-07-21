@@ -45,14 +45,32 @@ var webshot = require('webshot'),
     }
   };
 
-module.exports = exports = function onTickFactory(options, onCompleteCallback) {
+module.exports = exports = function onTickFactory(options, callback) {
   var saveMiddlewareOption = options.saveMiddleware;
+
+  // prevent onCompleteCallback from being called twice since webshot may
+  // call the callback function multiple times 
+  // (ex: when using stream with timeouts)
+  var callbackCalled = false;
+
+  var onCompleteCallback = function(err) {
+    if(callbackCalled) {
+      utils.logError(err);
+      return;
+    }
+    if(!err) {
+      console.log(('\n['+ new Date().toUTCString() + '] ').bold + ('Successfully used all middleware! ').green.bold);      
+    }
+
+    callbackCalled = true;
+    callback(err);
+  };
 
   webshot(options.url, options, function(err, readStream) {
     if(err) {
-  	 utils.logError(err);
-     onCompleteCallback(err);
-     return;
+      utils.logError(err);
+      onCompleteCallback(err);
+      return;
     }
 
     if(saveMiddlewareOption) {
@@ -62,28 +80,14 @@ module.exports = exports = function onTickFactory(options, onCompleteCallback) {
           'lastMiddleware': true,
           'options': options,
           'readStream': readStream
-        }, function(err) {
-          if(err) {
-            onCompleteCallback(err);
-            return;
-          }
-          console.log(('\n['+ new Date().toUTCString() + '] ').bold + ('Successfully used all middleware! ').green.bold);      
-          onCompleteCallback(null);
-        });
+        }, onCompleteCallback);
       } else if(utils.isObject(saveMiddleware) && saveMiddleware.middleware) {
         saveMiddleware({
           'middleware': middleware,
           'lastMiddleware': true,
           'options': utils.isObject(saveMiddleware.options) ? utils.mergeOptions(options, saveMiddleware.options) : options,
           'readStream': readStream
-        }, function(err) {
-          if(err) {
-            onCompleteCallback(err);
-            return;
-          }
-          console.log(('\n['+ new Date().toUTCString() + '] ').bold + ('Successfully used all middleware! ').green.bold);      
-          onCompleteCallback(null);
-        });
+        }, onCompleteCallback);
       } else if(utils.isArray(saveMiddlewareOption) && saveMiddlewareOption.length) {
         var funs = saveMiddlewareOption.map(function(currentMiddleware) {
           return function(cb) {
@@ -92,21 +96,34 @@ module.exports = exports = function onTickFactory(options, onCompleteCallback) {
                 'middleware': currentMiddleware.middleware,
                 'options': currentMiddleware.options && utils.isObject(currentMiddleware.options) ? utils.mergeOptions(options, currentMiddleware.options) : options,
                 'readStream': readStream
-              }, cb);
+              }, function(err) {
+                if(callbackCalled) {
+                  // prevent the execution of the next middleware if the 
+                  // onCompleteCallback has already been called
+                  cb(new Error('Callback already called'));
+                  return;
+                }
+                cb(err);
+              });
             } else if(typeof currentMiddleware === 'function') {
               saveMiddleware({
                 'middleware': currentMiddleware,
                 'options': options,
                 'readStream': readStream
-              }, cb);
+              }, function(err) {
+                if(callbackCalled) {
+                  // prevent the execution of the next middleware if the 
+                  // onCompleteCallback has already been called
+                  cb(new Error('Callback already called'));
+                  return;
+                }
+                cb(err);
+              });
             }
           };
         });
 
-        async.series(funs, function(err) {
-          console.log(('\n['+ new Date().toUTCString() + '] ').bold + ('Successfully used all middleware! ').green.bold);      
-          onCompleteCallback(err);
-        });
+        async.series(funs, onCompleteCallback);
       }
     }
   });
