@@ -6,6 +6,7 @@
 */
 
 var webshot = require('webshot'),
+  async = require('async'),
   fs = require('fs'),
   utils = require('./utils'),
   saveMiddleware = function(obj, callback) {
@@ -44,14 +45,32 @@ var webshot = require('webshot'),
     }
   };
 
-module.exports = exports = function onTickFactory(options, onCompleteCallback) {
+module.exports = exports = function onTickFactory(options, callback) {
   var saveMiddlewareOption = options.saveMiddleware;
+
+  // prevent onCompleteCallback from being called twice since webshot may
+  // call the callback function multiple times 
+  // (ex: when using stream with timeouts)
+  var callbackCalled = false;
+
+  var onCompleteCallback = function(err) {
+    if(callbackCalled) {
+      utils.logError(err);
+      return;
+    }
+    if(!err) {
+      console.log(('\n['+ new Date().toUTCString() + '] ').bold + ('Successfully used all middleware! ').green.bold);      
+    }
+
+    callbackCalled = true;
+    callback(err);
+  };
 
   webshot(options.url, options, function(err, readStream) {
     if(err) {
-  	 utils.logError(err);
-     onCompleteCallback(err);
-     return;
+      utils.logError(err);
+      onCompleteCallback(err);
+      return;
     }
 
     if(saveMiddlewareOption) {
@@ -61,64 +80,50 @@ module.exports = exports = function onTickFactory(options, onCompleteCallback) {
           'lastMiddleware': true,
           'options': options,
           'readStream': readStream
-        }, function(err) {
-          if(err) {
-            onCompleteCallback(err);
-            return;
-          }
-          console.log(('\n['+ new Date().toUTCString() + '] ').bold + ('Successfully used all middleware! ').green.bold);      
-          onCompleteCallback(null);
-        });
+        }, onCompleteCallback);
       } else if(utils.isObject(saveMiddleware) && saveMiddleware.middleware) {
         saveMiddleware({
           'middleware': middleware,
           'lastMiddleware': true,
           'options': utils.isObject(saveMiddleware.options) ? utils.mergeOptions(options, saveMiddleware.options) : options,
           'readStream': readStream
-        }, function(err) {
-          if(err) {
-            onCompleteCallback(err);
-            return;
-          }
-          console.log(('\n['+ new Date().toUTCString() + '] ').bold + ('Successfully used all middleware! ').green.bold);      
-          onCompleteCallback(null);
-        });
+        }, onCompleteCallback);
       } else if(utils.isArray(saveMiddlewareOption) && saveMiddlewareOption.length) {
-        (function loop(iterator) {
-          iterator = iterator || 0;
-          var currentMiddleware = saveMiddlewareOption[iterator];
-          if(!currentMiddleware) {
-            console.log(('\n['+ new Date().toUTCString() + '] ').bold + ('Successfully used all middleware! ').green.bold);      
-            onCompleteCallback(null);
-            return;
-          }
-          if(utils.isObject(currentMiddleware) && typeof currentMiddleware.middleware === 'function') {
-            saveMiddleware({
-              'middleware': currentMiddleware.middleware,
-              'options': currentMiddleware.options && utils.isObject(currentMiddleware.options) ? utils.mergeOptions(options, currentMiddleware.options) : options,
-              'readStream': readStream
-            }, function(err) {
-              if(err) {
-                onCompleteCallback(err);
-                return;
-              }
-              loop(++iterator);
-            });
-          } else if(typeof currentMiddleware === 'function') {
-            saveMiddleware({
-              'middleware': currentMiddleware,
-              'options': options,
-              'readStream': readStream
-            }, function(err) {
-              if(err) {
-                onCompleteCallback(err);
-                return;
-              }
-              loop(++iterator);
-            });
-          }
+        var funs = saveMiddlewareOption.map(function(currentMiddleware) {
+          return function(cb) {
+            if(utils.isObject(currentMiddleware) && typeof currentMiddleware.middleware === 'function') {
+              saveMiddleware({
+                'middleware': currentMiddleware.middleware,
+                'options': currentMiddleware.options && utils.isObject(currentMiddleware.options) ? utils.mergeOptions(options, currentMiddleware.options) : options,
+                'readStream': readStream
+              }, function(err) {
+                if(callbackCalled) {
+                  // prevent the execution of the next middleware if the 
+                  // onCompleteCallback has already been called
+                  cb(new Error('Callback already called'));
+                  return;
+                }
+                cb(err);
+              });
+            } else if(typeof currentMiddleware === 'function') {
+              saveMiddleware({
+                'middleware': currentMiddleware,
+                'options': options,
+                'readStream': readStream
+              }, function(err) {
+                if(callbackCalled) {
+                  // prevent the execution of the next middleware if the 
+                  // onCompleteCallback has already been called
+                  cb(new Error('Callback already called'));
+                  return;
+                }
+                cb(err);
+              });
+            }
+          };
+        });
 
-        }());
+        async.series(funs, onCompleteCallback);
       }
     }
   });
