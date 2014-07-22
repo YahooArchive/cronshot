@@ -7,21 +7,18 @@
 
 var CronJob = require('cron').CronJob,
 	onTickFactory = require('./onTickFactory'),
-	onCompleteFactory = require('./onCompleteFactory'),
   utils = require('./utils'),
-	startCronJob = module.exports = exports = function(options) {
-    var onCompleteCallback = onCompleteFactory(options);
-
+	startCronJob = module.exports = exports = function(options, callback) {
 		if(options.cronPattern) {
 			var job = new CronJob(options.cronPattern, function fn() {
 				console.log(('\n['+ new Date().toUTCString() + '] ').bold + ('Starting to capture: ').rainbow + (options.url).underline);
-        // don't call onCompleteCallback for each tick of the CronJob
+        // don't call callback for each tick of the CronJob
 				onTickFactory(options, utils.noop);
 				return fn;
-			}, onCompleteCallback, options.start, options.timeZone);
+			}, callback, options.start, options.timeZone);
 
 			job.start();
 		} else {
-			onTickFactory(options, onCompleteCallback); 
+			onTickFactory(options, callback); 
 		}
 	};
