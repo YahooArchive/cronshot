@@ -45,16 +45,10 @@ var cronshot = require('./src/cronshot'),
 cronshot.startCapturing({
   'url': 'http://yahoo.com',
   'path': __dirname,
-  'host': 'playground.yahoofs.com',
-  'hostPath': '/blahhh',
   'cronPattern': '',
   'saveMiddleware': middleware.local,
-  'customCSS': '* { whitespace: nowrap !important; }',
-  'onCompleteCallback': function(err) {
-    if(err) {
-      console.error(err);
-      return;
-    }
-    console.log('All Done!');
-  }
+  'customCSS': '* { whitespace: nowrap !important; }'
+}, function(err) {
+  if(err)
+    console.error(err);
 });
