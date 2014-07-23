@@ -76,6 +76,8 @@ cronshot.startCapturing({
       }]
     }
   }]
+}, function(err) {
+  // optional callback function once all screenshots have been taken
 });
 ```
 
@@ -111,6 +113,8 @@ cronshot.startCapturing({
   'path': __dirname,
   'cronPattern': '',
   'saveMiddleware': require('./saveMiddleware/local')
+}, function(err) {
+  // optional callback function once the screenshot has been taken
 });
 ```
 
@@ -134,7 +138,9 @@ cronshot.startCapturing([{
   'path': __dirname,
   'imageName': 'screenshot1.png',
   'saveMiddleware': require('./saveMiddleware/local')
-}]);
+}], function(err) {
+  // optional callback function once all screenshots have been taken
+});
 ```
 
 **Passing Options via Command Line**
@@ -230,9 +236,7 @@ To see examples of how to write your own `saveMiddleware` adapter, look in the *
 // window.callPhantom('takeShot');
 'takeShotOnCallback': false,
 // If the loaded page has a non-200 status code, don't take a screenshot, cause an error instead.
-'errorIfStatusIsNot200': false,
-// An optional callback function when all screenshots have been taken 
-'onCompleteCallback': function(err) { }
+'errorIfStatusIsNot200': false
 ```
 
 ## Credits
