@@ -8,17 +8,24 @@
 var CronJob = require('cron').CronJob,
     onTickFactory = require('./onTickFactory'),
     utils = require('./utils'),
-    startCronJob = module.exports = exports = function(options, callback) {
-      if(options.cronPattern) {
+    count = 0;
+
+module.exports = function(options, callback) {
+    if (options.cronPattern) {
         var job = new CronJob(options.cronPattern, function fn() {
-          console.log(('\n['+ new Date().toUTCString() + '] ').bold + ('Starting to capture: ').rainbow + (options.url).underline);
-          // don't call callback for each tick of the CronJob
-          onTickFactory(options, utils.noop);
-          return fn;
+            if ((typeof options.max === 'number') && count >= options.max) {
+                callback(null, {});
+                return;
+            }
+            count += 1;
+            utils.log(('\n[' + new Date().toUTCString() + '] ').bold + ('Starting to capture: ').rainbow + (options.url).underline, false, options);
+            // don't call callback for each tick of the CronJob
+            onTickFactory(options, utils.noop);
+            return fn;
         }, callback, options.start, options.timeZone);
 
         job.start();
-      } else {
-        onTickFactory(options, callback); 
-      }
-    };
+    } else {
+        onTickFactory(options, callback);
+    }
+};

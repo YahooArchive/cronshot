@@ -5,7 +5,7 @@ Node module that allows you to schedule cron jobs to take, alter, and store web 
 
 ## How
 
-cronshot.js uses:
+Cronshot uses:
 
 ### Required
 
@@ -14,10 +14,6 @@ cronshot.js uses:
 - [node-cron](https://github.com/ncb000gt/node-cron) to schedule screenshots
 
 - [async](https://github.com/caolan/async) to allow more than one screenshot cron job to be run in parallel
-
-### Optional
-
-- [gm](https://github.com/aheckmann/gm) to programatically use [ImageMagick](http://www.imagemagick.org/) to manipulate the screenshots
 
 
 ## Quick Start
@@ -32,26 +28,57 @@ cronshot.js uses:
  - `ynpm install`
 
 * **Run the example `cronshot-runner.js`**
- - `node cronshot-runner.js`
-
-### Optional
-
-* **Install ImageMagick**
-
- * _Note:_ This is only required if you would like to use the Image Magick middleware
-
- - `brew update && brew install imagemagick`
+ - `node example/cronshot-runner.js`
 
 
 ## Examples
 
+**Take and Save a Screenshot to Mobstor**
+
+```javascript
+var cronshot = require('cronshot');
+
+// Mobstor Screenshot Example
+// --------------------------
+
+// Takes a screenshot of google.com,
+// saves the screenshot locally,
+// and saves it to mobstor
+
+// Mobstor example
+cronshot.startCapturing({
+  // The URL of the website to take a screenshot of
+  'url': 'http://www.google.com',
+  // Where to save the screen shot locally
+  'path': __dirname,
+  // Our middleware modules
+  'saveMiddleware': [{
+      'middleware': require('cronshot-local')
+    }, {
+    // Function that does all the mobstor stuff
+    'middleware': require('cronshot-mobstor'),
+    'options': {
+      'host': 'playground.yahoofs.com',
+      'hostPath': '/test',
+
+      // optional headers to be sent to Mobstor 
+      'headers': {
+        'Cache-Control': 'max-age=86400'
+      }
+    }
+  }]
+}, function(err) {
+  // optional callback function once all screenshots have been taken
+});
+```
+
 **Take and Save a Transparent Screenshot**
 
 ```javascript
-var cronshot = require('./src/cronshot');
+var cronshot = require('cronshot');
 
-// Image Magick and Mobstor Screenshot Example
-// -------------------------------------------
+// Image Magick Example
+// --------------------
 
 // Takes a screenshot of google.com,
 // and converts the screenshot to be a transparent image using Image Magick
@@ -84,44 +111,56 @@ cronshot.startCapturing({
 **Take and Save A Screenshot To The Local Filesystem Every 10 seconds**
 
 ```javascript
-var cronshot = require('./src/cronshot');
+var cronshot = require('cronshot');
 
-// Save Local File Example
-// -----------------------
+// Local File Example
+// ------------------
 
 // Takes a screenshot of google.com,
-// and saves the screenshot in the current local directory
+// and saves the screenshot to the local file system
+
+// Save Local File Example
 cronshot.startCapturing({
-  'url': 'http://www.google.com',
+  'url': 'http://yahoo.com',
   'path': __dirname,
-  'saveMiddleware': require('./saveMiddleware/local')
+  'saveMiddleware': [{
+    'middleware': require('cronshot-local')
+  }]
+}, function(err) {
+  if(err)
+    console.error(err);
 });
 ```
 
 **Take and Save An Image To The Local Filesystem One Time**
 
 ```javascript
-var cronshot = require('./src/cronshot');
+var cronshot = require('cronshot');
 
-// Save Local File Example
-// -----------------------
+// Local File Example
+// ------------------
 
 // Takes a screenshot of google.com,
-// and saves the screenshot in the current local directory
+// and saves the screenshot to the local file system
+
+// Save Local File Example
 cronshot.startCapturing({
-  'url': 'http://www.google.com',
+  'url': 'http://yahoo.com',
   'path': __dirname,
   'cronPattern': '',
-  'saveMiddleware': require('./saveMiddleware/local')
+  'saveMiddleware': [{
+    'middleware': require('cronshot-local')
+  }]
 }, function(err) {
-  // optional callback function once the screenshot has been taken
+  if(err)
+    console.error(err);
 });
 ```
 
 **Run One Or More Cron Jobs In Parallel**
 
 ```javascript
-var cronshot = require('./src/cronshot');
+var cronshot = require('cronshot');
 
 // Save Local Files Example
 // -----------------------
@@ -137,7 +176,7 @@ cronshot.startCapturing([{
   'url': 'http://yahoo.com',
   'path': __dirname,
   'imageName': 'screenshot1.png',
-  'saveMiddleware': require('./saveMiddleware/local')
+  'saveMiddleware': require('cronshot-local')
 }], function(err) {
   // optional callback function once all screenshots have been taken
 });
@@ -145,7 +184,7 @@ cronshot.startCapturing([{
 
 **Passing Options via Command Line**
 
-`node cronshot-runner.js --customCSS 'body { background: blue !important; }' --url 'http://google.com'`
+`node example/cronshot-runner.js --customCSS 'body { background: blue !important; }' --url 'http://google.com'`
 
 **Note:** You can pass BOTH **code options** AND **command line options**. If you pass the same option via both methods, the command line option takes precedence.
 
@@ -155,11 +194,12 @@ The `saveMiddleware` option accepts one or more functions that can be used to ma
 
 Below are the current middleware functions available:
 
-`imagemagick` - Manipulates a screenshot and saves the result to the local filesystem (accepts a `gmCommands` option that allows you to pass one or more commands)
+[cronshot-imagemagick](https://git.corp.yahoo.com/sports/cronshot-imagemagick) - Cronshot middleware to manipulate and save images with ImageMagick
 
-`local` - Saves to the local file system
+[cronshot-local](https://git.corp.yahoo.com/sports/cronshot-local) - Cronshot middleware to save images locally
 
-To see examples of how to write your own `saveMiddleware` adapter, look in the **saveMiddleware** folder.
+[cronshot-mobstor](https://git.corp.yahoo.com/sports/cronshot-mobstor) - Cronshot middleware that saves screenshots to Mobstor
+
 
 ## Options
 
@@ -172,8 +212,6 @@ To see examples of how to write your own `saveMiddleware` adapter, look in the *
 'url': '',
 // The name of the image you would like to be saved
 'imageName': 'screenshot.png',
-// Whether or not you would like to save a copy of the screenshot image locally
-'saveImageLocally': false,
 // The base host that you would like to save to
 'host': '',
 // the path that you would like to save to
