@@ -1,7 +1,9 @@
-cronshot.js
-===========
+cronshot
+========
 
 Node module that allows you to schedule cron jobs to take, alter, and store web page screenshots
+
+`ynpm install cronshot`
 
 ## How
 
