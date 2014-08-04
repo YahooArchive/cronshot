@@ -44,11 +44,11 @@ module.exports = function(opts, onCompleteCallback) {
 
         async.parallel(parallelTasks, function(err) {
             if (err) {
-                utils.logError(err, opts);
+                // utils.logError(err, opts);
                 onCompleteCallback(err);
                 return;
             }
-            utils.log(('\n[' + new Date().toUTCString() + '] ').bold + ('Completed all screenshots!').green.bold, false, opts);
+            // utils.log(('\n[' + new Date().toUTCString() + '] ').bold + ('Completed all screenshots!').green.bold, false, opts);
             onCompleteCallback(null);
         });
     } else {
