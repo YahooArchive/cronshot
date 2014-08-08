@@ -149,7 +149,7 @@ var cronshot = require('cronshot');
 cronshot.startCapturing({
   'url': 'http://yahoo.com',
   'path': __dirname,
-  'cronPattern': '',
+  'cronPattern': false,
   'saveMiddleware': [{
     'middleware': require('cronshot-local')
   }]
