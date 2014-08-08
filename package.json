@@ -19,7 +19,7 @@
     "repository": {
         "type": "git",
         "url": "git@git.corp.yahoo.com:sports/cronshot.git#master",
-        "revision": "526a979a37f6402776488a4d535164874ea8666d"
+        "revision": "c393e8556915b6ee809e4ae338121c1846c65192"
     },
     "keywords": [
         "cron",
@@ -62,7 +62,7 @@
             "email": "gfranko@yahoo-inc.com"
         },
         "screwdriver": {
-            "build_url": "http://jenkins.screwdriver.corp.yahoo.com:9999/jenkins/job/14212-cronshot-trunk-component/5/",
+            "build_url": "http://jenkins.screwdriver.corp.yahoo.com:9999/jenkins/job/14212-cronshot-trunk-component/6/",
             "project_id": 14212,
             "project_url": "http://screwdriver.corp.yahoo.com/projects/14212"
         }
