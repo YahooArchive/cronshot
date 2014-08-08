@@ -33,11 +33,13 @@ var webshot = require('webshot'),
                 'options': options,
                 'readStream': readStream
             }, function(err, info) {
+                var consoleName = info.name === 'local' ? path + imageName : host + hostPath + imageName;
+
                 if (err) {
                     utils.logError(err, options);
                     callback(err);
                 } else {
-                    utils.log(('\n[' + new Date().toUTCString() + '] ').bold + ('Successfully used the ' + info.name + ' middleware: ').green + (host + (hostPath || path) + imageName).underline, false, options);
+                    utils.log(('\n[' + new Date().toUTCString() + '] ').bold + ('Successfully used the ' + info.name + ' middleware: ').green + consoleName.underline, false, options);
                     callback(null);
                 }
             });
@@ -67,8 +69,6 @@ module.exports = function onTickFactory(options, callback) {
 
     webshot(options.url, options, function(err, readStream) {
         err = err || options.error;
-
-        console.log('err: ', err);
 
         if (err) {
             utils.logError(err, options);
