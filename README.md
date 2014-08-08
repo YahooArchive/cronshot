@@ -277,6 +277,7 @@ Below are the current middleware functions available:
 'takeShotOnCallback': false,
 // If the loaded page has a non-200 status code, don't take a screenshot, cause an error instead.
 'errorIfStatusIsNot200': false,
+// If you set this to true, then cronshot will not print out any success/error logs
 'silent': false
 ```
 
