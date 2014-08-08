@@ -15,11 +15,11 @@
             "name": "Akshay Patel"
         }
     ],
-    "version": "0.1.2",
+    "version": "0.1.3",
     "repository": {
         "type": "git",
         "url": "git@git.corp.yahoo.com:sports/cronshot.git#master",
-        "revision": "bfb4d527e0addde8ddc60f6fa7b7c8b1e95f92df"
+        "revision": "fdf0a115e0b367d2e995930271eb4ae7beb85512"
     },
     "keywords": [
         "cron",
@@ -62,7 +62,7 @@
             "email": "gfranko@yahoo-inc.com"
         },
         "screwdriver": {
-            "build_url": "http://jenkins.screwdriver.corp.yahoo.com:9999/jenkins/job/14212-cronshot-trunk-component/2/",
+            "build_url": "http://jenkins.screwdriver.corp.yahoo.com:9999/jenkins/job/14212-cronshot-trunk-component/3/",
             "project_id": 14212,
             "project_url": "http://screwdriver.corp.yahoo.com/projects/14212"
         }
