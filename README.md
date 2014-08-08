@@ -94,7 +94,7 @@ cronshot.startCapturing({
   // Our middleware modules
   'saveMiddleware': [{
     // Function that does all the Image Magick stuff
-    'middleware': require('./saveMiddleware/imagemagick'),
+    'middleware': require('cronshot-imagemagick'),
     'options': {
       'gmCommands': [{
         'method': 'trim',
@@ -173,7 +173,7 @@ cronshot.startCapturing([{
   'url': 'http://www.google.com',
   'path': __dirname,
   'imageName': 'screenshot.png',
-  'saveMiddleware': require('./saveMiddleware/local')
+  'saveMiddleware': require('cronshot-local')
 }, {
   'url': 'http://yahoo.com',
   'path': __dirname,

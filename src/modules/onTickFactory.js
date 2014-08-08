@@ -68,6 +68,8 @@ module.exports = function onTickFactory(options, callback) {
     webshot(options.url, options, function(err, readStream) {
         err = err || options.error;
 
+        console.log('err: ', err);
+
         if (err) {
             utils.logError(err, options);
             onCompleteCallback(err);
