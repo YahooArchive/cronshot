@@ -4,4 +4,5 @@ arrow-target
 /node_modules/
 npm-*.log
 *.tap
+*.png
 .DS_Store
