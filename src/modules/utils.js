@@ -81,7 +81,7 @@ var utils = module.exports = {
     'noop': function noop() {},
     'makeLog': function(info, color) {
         color = color || 'green';
-        return console.log(('\n[' + new Date().toUTCString() + '] ').bold + info[color] + '\n');
+        return info[color] ? console.log(('\n[' + new Date().toUTCString() + '] ').bold + info[color] + '\n') : '';
     },
     'logError': function(msg, options) {
         options = options || {};
