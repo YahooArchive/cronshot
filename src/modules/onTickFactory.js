@@ -36,7 +36,6 @@ var webshot = require('webshot'),
                 var consoleName = info && info.name ? info.name.indexOf('local') !== -1 ? path + imageName : host + hostPath + imageName : 'Unknown';
 
                 if (err) {
-                    console.log('err: ', err);
                     utils.logError(err, options);
                     callback(err);
                 } else {
