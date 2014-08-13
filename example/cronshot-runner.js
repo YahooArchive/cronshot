@@ -106,100 +106,14 @@ var cronshot = require('../src/index'),
 // });
 
 // Save Local File Example
-// cronshot.startCapturing({
-//     'url': 'http://yahoo.com',
-//     'path': __dirname,
-//     'cronPattern': '',
-//     'saveMiddleware': middleware.local,
-//     'customCSS': '* { whitespace: nowrap !important; }'
-// }, function(err) {
-//     if (err) {
-//         console.error(err);
-//     }
-// });
-cronshot.startCapturing([{
-    url: 'http://overthrownalone.corp.ne1.yahoo.com:3000/console/?m_id=td-applet-currentplay&gameState=2',
-    imageName: 'lA00.png',
-    hostPath: '/49ers/l',
-    path: process.cwd(),
-    saveMiddleware: [middleware.local, middleware.mobstor],
-    timeout: 20000,
-    streamType: 'png',
-    cronPattern: false,
-    windowSize: {
-        width: 1920,
-        height: 1080
-    },
-    shotSize: {
-        width: 'all',
-        height: 'all'
-    },
-    takeShotOnCallback: true,
-    'script': function() {
-        var images = document.querySelectorAll('img'),
-            loadedAllImages = true,
-            currentImage;
-
-        for (var x = 0; x < images.length; x++) {
-            currentImage = images[x];
-            if (!currentImage.complete) {
-                loadedAllImages = false;
-            }
-        }
-
-        if (loadedAllImages) {
-            window.callPhantom('takeShot');
-        }
-    },
-    defaultWhiteBackground: false,
-    zoomFactor: 1,
-    userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.153 Safari/537.36',
-    errorIfStatusIsNot200: true,
-    silent: false,
-    host: 'playground.yahoofs.com',
-    headers: {
-        'Cache-Control': 'no-store'
+cronshot.startCapturing({
+    'url': 'http://yahoo.com',
+    'path': __dirname,
+    'cronPattern': '',
+    'saveMiddleware': middleware.local,
+    'customCSS': '* { whitespace: nowrap !important; }'
+}, function(err) {
+    if (err) {
+        console.error(err);
     }
-}, {
-    url: 'http://overthrownalone.corp.ne1.yahoo.com:3000/console/?m_id=td-applet-currentplay&gameState=2',
-    imageName: 'lA01.png',
-    hostPath: '/49ers/l',
-    path: process.cwd(),
-    saveMiddleware: [middleware.local, middleware.mobstor],
-    streamType: 'png',
-    cronPattern: false,
-    windowSize: {
-        width: 1920,
-        height: 1080
-    },
-    shotSize: {
-        width: 'all',
-        height: 'all'
-    },
-    takeShotOnCallback: true,
-    'script': function() {
-        var images = document.querySelectorAll('img'),
-            loadedAllImages = true,
-            currentImage;
-
-        for (var x = 0; x < images.length; x++) {
-            currentImage = images[x];
-            if (!currentImage.complete) {
-                loadedAllImages = false;
-            }
-        }
-
-        if (loadedAllImages) {
-            window.callPhantom('takeShot');
-        }
-    },
-    defaultWhiteBackground: false,
-    zoomFactor: 1,
-    userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.153 Safari/537.36',
-    errorIfStatusIsNot200: true,
-    silent: false,
-    host: 'playground.yahoofs.com',
-    headers: {
-        'Cache-Control': 'no-store'
-    }
-}]);
+});

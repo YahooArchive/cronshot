@@ -42,7 +42,7 @@ module.exports = function(opts, onCompleteCallback) {
             };
         });
 
-        async.parallel(parallelTasks, function(err) {
+        async.parallelLimit(parallelTasks, 10, function(err) {
             if (err) {
                 // utils.logError(err, opts);
                 onCompleteCallback(err);
