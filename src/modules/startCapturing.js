@@ -36,13 +36,13 @@ module.exports = function(opts, onCompleteCallback) {
     }
 
     if (utils.isArray(opts)) {
-        var parallelTasks = opts.map(function(opt) {
+        var tasks = opts.map(function(opt) {
             return function(cb) {
                 startLogic(opt, cb);
             };
         });
 
-        async.parallelLimit(parallelTasks, 10, function(err) {
+        async.series(tasks, function(err) {
             if (err) {
                 // utils.logError(err, opts);
                 onCompleteCallback(err);
