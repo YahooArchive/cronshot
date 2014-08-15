@@ -43,5 +43,6 @@ module.exports = {
     'userAgent': '',
     'saveMiddleware': null,
     'silent': false,
-    'max': false
+    'max': false,
+    'parallelLimit': 5
 };

@@ -38,7 +38,7 @@ describe('cronshot', function() {
             saveMiddleware: [localMiddleware],
             url: 'http://yahoo.com',
             path: __dirname + '/../images/',
-            cronPattern: '',
+            cronPattern: false,
             error: true
         }, function(err) {
             expect(err).not.to.equal(null);
@@ -57,7 +57,7 @@ describe('cronshot', function() {
             saveMiddleware: [saveMiddlewareExample],
             url: 'http://yahoo.com',
             path: __dirname + '/../images/',
-            cronPattern: ''
+            cronPattern: false
         }, function(err) {
             expect(err).to.equal(undefined);
             done();
@@ -81,7 +81,7 @@ describe('cronshot', function() {
             saveMiddleware: [saveMiddlewareExample1, saveMiddlewareExample2],
             url: 'http://yahoo.com',
             path: __dirname + '/../images/',
-            cronPattern: ''
+            cronPattern: false
         }, function(err) {
             expect(err).not.to.equal(null);
             done();
@@ -105,7 +105,7 @@ describe('cronshot', function() {
             saveMiddleware: [saveMiddlewareExample1, saveMiddlewareExample2],
             url: 'http://yahoo.com',
             path: __dirname + '/../images/',
-            cronPattern: ''
+            cronPattern: false
         }, function(err) {
             expect(err).to.equal(undefined);
             done();
@@ -124,7 +124,7 @@ describe('cronshot', function() {
             saveMiddleware: saveMiddlewareExample,
             url: 'http://yahoo.com',
             path: __dirname + '/../images/',
-            cronPattern: ''
+            cronPattern: false
         }, function(err) {
             expect(err).to.equal(null);
             done();
@@ -153,7 +153,7 @@ describe('cronshot', function() {
             }],
             url: 'http://yahoo.com',
             path: __dirname + '/../images/',
-            cronPattern: ''
+            cronPattern: false
         }, function(err) {
             expect(err).to.equal(undefined);
             done();
@@ -199,7 +199,7 @@ describe('cronshot', function() {
             saveMiddleware: [saveMiddlewareExample],
             url: 'http://yahoo.com',
             path: __dirname + '/../images/',
-            cronPattern: ''
+            cronPattern: false
         }, {
             silent: true,
             saveMiddleware: [saveMiddlewareExample],
