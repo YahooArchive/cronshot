@@ -58,7 +58,7 @@ cronshot.startCapturing({
     // Only takes one screenshot
     'cronPattern': false,
     // What middleware functions to use each time a screenshot is taken
-    'saveMiddleware': ['middleware': middleware.local]
+    'saveMiddleware': [middleware.local]
 }, function(err) {
     if (err) {
         console.error(err);
