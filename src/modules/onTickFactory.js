@@ -47,28 +47,28 @@ var webshot = require('webshot'),
     };
 
 module.exports = function onTickFactory(options, callback) {
-    var saveMiddlewareOption = options.saveMiddleware;
+    var saveMiddlewareOption = options.saveMiddleware,
+        // prevent onCompleteCallback from being called twice since webshot may
+        // call the callback function multiple times 
+        // (ex: when using stream with timeouts)
+        callbackCalled = false,
+        onCompleteCallback = function(err) {
+            if (callbackCalled || options.error) {
+                utils.logError(err, options);
+                return;
+            }
+            if (!err) {
+                utils.log(('\n[' + new Date().toUTCString() + '] ').bold + ('Successfully used all middleware! ').green.bold, false, options);
+            }
 
-    // prevent onCompleteCallback from being called twice since webshot may
-    // call the callback function multiple times 
-    // (ex: when using stream with timeouts)
-    var callbackCalled = false;
-
-    var onCompleteCallback = function(err) {
-        if (callbackCalled || options.error) {
-            utils.logError(err, options);
-            return;
-        }
-        if (!err) {
-            utils.log(('\n[' + new Date().toUTCString() + '] ').bold + ('Successfully used all middleware! ').green.bold, false, options);
-        }
-
-        callbackCalled = true;
-        callback(err);
-    };
+            callbackCalled = true;
+            callback(err);
+        };
 
     webshot(options.url, options, function(err, readStream) {
         err = err || options.error;
+
+        var funcs;
 
         if (err) {
             utils.logError(err, options);
@@ -77,17 +77,16 @@ module.exports = function onTickFactory(options, callback) {
         }
 
         if (saveMiddlewareOption) {
-            if (typeof saveMiddlewareOption === 'function') {
+            if (utils.isFunction(saveMiddlewareOption)) {
                 saveMiddleware({
                     'middleware': saveMiddlewareOption,
-                    'lastMiddleware': true,
                     'options': options,
                     'readStream': readStream
                 }, onCompleteCallback);
             } else if (utils.isArray(saveMiddlewareOption)) {
-                var funcs = saveMiddlewareOption.map(function(currentMiddleware) {
+                funcs = saveMiddlewareOption.map(function(currentMiddleware) {
                     return function(cb) {
-                        if (utils.isObject(currentMiddleware) && typeof currentMiddleware.middleware === 'function') {
+                        if (utils.isObject(currentMiddleware) && utils.isFunction(currentMiddleware.middleware)) {
                             saveMiddleware({
                                 'middleware': currentMiddleware.middleware,
                                 'options': currentMiddleware.options && utils.isObject(currentMiddleware.options) ? utils.mergeOptions(options, currentMiddleware.options) : options,
@@ -101,7 +100,7 @@ module.exports = function onTickFactory(options, callback) {
                                 }
                                 cb(err);
                             });
-                        } else if (typeof currentMiddleware === 'function') {
+                        } else if (utils.isFunction(currentMiddleware)) {
                             saveMiddleware({
                                 'middleware': currentMiddleware,
                                 'options': options,
@@ -119,7 +118,7 @@ module.exports = function onTickFactory(options, callback) {
                     };
                 });
 
-                if (funcs.length) {
+                if (funcs && funcs.length) {
                     async.series(funcs, onCompleteCallback);
                 } else {
                     onCompleteCallback(new Error('No middleware is being used'));

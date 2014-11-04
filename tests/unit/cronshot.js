@@ -6,7 +6,7 @@ var expect = require('chai').expect,
     localMiddleware = require('cronshot-local');
 
 describe('cronshot', function() {
-    it("should error if a saveMiddleware option is not passed", function() {
+    it('should error if a saveMiddleware option is not passed', function() {
         cronshot.startCapturing({
             silent: true
         }, function(err) {
@@ -14,7 +14,7 @@ describe('cronshot', function() {
         });
     });
 
-    it("should error if an url option is not passed", function() {
+    it('should error if an url option is not passed', function() {
         cronshot.startCapturing({
             silent: true,
             saveMiddleware: []
@@ -23,7 +23,7 @@ describe('cronshot', function() {
         });
     });
 
-    it("should error if a path option is not passed", function() {
+    it('should error if a path option is not passed', function() {
         cronshot.startCapturing({
             silent: true,
             saveMiddleware: [localMiddleware]
@@ -32,7 +32,7 @@ describe('cronshot', function() {
         });
     });
 
-    it("should error if webshot throws an error", function() {
+    it('should error if webshot throws an error', function() {
         cronshot.startCapturing({
             silent: true,
             saveMiddleware: [localMiddleware],
@@ -45,7 +45,7 @@ describe('cronshot', function() {
         });
     });
 
-    it("should succeed if one middleware functions is used", function(done) {
+    it('should succeed if one middleware functions is used', function(done) {
         var saveMiddlewareExample = function(obj, callback) {
             callback(null, {
                 name: 'test'
@@ -64,7 +64,7 @@ describe('cronshot', function() {
         });
     });
 
-    it("should fail if one middleware functions fails", function(done) {
+    it('should fail if one middleware functions fails', function(done) {
         var saveMiddlewareExample1 = function(obj, callback) {
                 callback(null, {
                     name: 'test1'
@@ -88,7 +88,7 @@ describe('cronshot', function() {
         });
     });
 
-    it("should succeed if more than one middleware functions are used", function(done) {
+    it('should succeed if more than one middleware functions are used', function(done) {
         var saveMiddlewareExample1 = function(obj, callback) {
                 callback(null, {
                     name: 'test1'
@@ -112,7 +112,7 @@ describe('cronshot', function() {
         });
     });
 
-    it("should succeed if the saveMiddleware is set to a function", function(done) {
+    it('should succeed if the saveMiddleware is set to a function', function(done) {
         var saveMiddlewareExample = function(obj, callback) {
             callback(null, {
                 name: 'test1'
@@ -131,7 +131,7 @@ describe('cronshot', function() {
         });
     });
 
-    it("should succeed if the saveMiddleware is set to an array of objects", function(done) {
+    it('should succeed if the saveMiddleware is set to an array of objects', function(done) {
         this.timeout(5000);
         var saveMiddlewareExample1 = function(obj, callback) {
                 callback(null, {
@@ -160,7 +160,7 @@ describe('cronshot', function() {
         });
     });
 
-    it("should succeed if a 1 second cronPattern is used", function(done) {
+    it('should succeed if a 1 second cronPattern is used', function(done) {
         this.timeout(5000);
 
         var saveMiddlewareExample1 = function(obj, callback) {
@@ -187,26 +187,28 @@ describe('cronshot', function() {
         });
     });
 
-    it("should succeed if multiple screenshot jobs are run in parallel", function(done) {
+    it('should succeed if multiple screenshot jobs are run in parallel', function(done) {
         var saveMiddlewareExample = function(obj, callback) {
             callback(null, {
                 name: 'test'
             });
         };
 
-        cronshot.startCapturing([{
-            silent: true,
-            saveMiddleware: [saveMiddlewareExample],
-            url: 'http://yahoo.com',
-            path: __dirname + '/../images/',
-            cronPattern: false
-        }, {
-            silent: true,
-            saveMiddleware: [saveMiddlewareExample],
-            url: 'http://yahoo.com',
-            path: __dirname + '/../images/',
-            cronPattern: ''
-        }], function(err) {
+        cronshot.startCapturing({
+            'screenshots': [{
+                silent: true,
+                saveMiddleware: [saveMiddlewareExample],
+                url: 'http://yahoo.com',
+                path: __dirname + '/../images/',
+                cronPattern: false
+            }, {
+                silent: true,
+                saveMiddleware: [saveMiddlewareExample],
+                url: 'http://yahoo.com',
+                path: __dirname + '/../images/',
+                cronPattern: ''
+            }]
+        }, function(err) {
             expect(err).to.equal(null);
             done();
         });

@@ -31,24 +31,23 @@ var utils = require('./utils'),
     };
 
 module.exports = function(opts, onCompleteCallback) {
-    if (typeof onCompleteCallback !== 'function') {
-        onCompleteCallback = utils.noop;
-    }
+    onCompleteCallback = utils.isFunction(onCompleteCallback) ? onCompleteCallback : utils.noop;
 
-    if (utils.isArray(opts) && opts.length) {
-        var tasks = opts.map(function(opt) {
+    var screenshots = opts.screenshots,
+        tasks;
+
+    if (utils.isArray(screenshots) && screenshots.length) {
+        tasks = screenshots.map(function(opt) {
             return function(cb) {
                 startLogic(opt, cb);
             };
         });
 
-        async.parallelLimit(tasks, (opts[0].parallelLimit || defaultOptions.parallelLimit), function(err) {
+        async.parallelLimit(tasks, (opts.parallelLimit || defaultOptions.parallelLimit), function(err) {
             if (err) {
-                // utils.logError(err, opts);
                 onCompleteCallback(err);
                 return;
             }
-            // utils.log(('\n[' + new Date().toUTCString() + '] ').bold + ('Completed all screenshots!').green.bold, false, opts);
             onCompleteCallback(null);
         });
     } else {

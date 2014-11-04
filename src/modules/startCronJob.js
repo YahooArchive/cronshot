@@ -13,7 +13,7 @@ var CronJob = require('cron').CronJob,
 module.exports = function(options, callback) {
     if (options.cronPattern) {
         var job = new CronJob(options.cronPattern, function fn() {
-            if ((typeof options.max === 'number') && count >= options.max) {
+            if (utils.isNumber(options.max) && count >= options.max) {
                 callback(null, {});
                 return;
             }

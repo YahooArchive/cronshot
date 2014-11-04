@@ -8,6 +8,12 @@
 require('colors');
 
 var utils = module.exports = {
+    isNumber: function(num){
+        return typeof num === 'number' || Object.prototype.toString.call(num) === '[object Number]';
+    },
+    'isFunction': function(func) {
+      return func && typeof func === 'function';
+    },
     'isObject': function(obj) {
         return Object.prototype.toString.call(obj) === '[object Object]';
     },

@@ -1,15 +1,13 @@
-cronshot
+CronShot
 ========
 
-Node module that allows you to schedule cron jobs to take, alter, and store web page screenshots
+Cron job scheduler to take, alter, and store web page screenshots
 
-`ynpm install cronshot`
+`npm install cronshot`
 
 ## How
 
-Cronshot uses:
-
-### Required
+CronShot uses:
 
 - [node-webshot](https://github.com/brenden/node-webshot) to take screenshots using [Phantom JS](https://github.com/ariya/phantomjs)
 
@@ -18,66 +16,64 @@ Cronshot uses:
 - [async](https://github.com/caolan/async) to allow more than one screenshot cron job to be run in parallel
 
 
-## Quick Start
-
-### Required
+## Setup
 
 * **Install PhantomJS**
  - Make sure you have [homebrew](http://brew.sh/) installed: `ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"`
+
  - Install PhantomJS: `brew update && brew install phantomjs`
 
-* **Install local dependencies**
- - `ynpm install`
+* **Install CronShot**
+ - `npm install cronshot`
 
-* **Run the example `cronshot-runner.js`**
- - `node example/cronshot-runner.js`
+* **Install/Create any CronShot [middleware functions](#middleware) that you want**
+
+* **Run CronShot using one of the examples below**
 
 
 ## Examples
 
-**Take and Save a Screenshot to Mobstor**
+**Take and Save An Image To The Local Filesystem One Time**
+
+`npm install cronshot-local`
 
 ```javascript
-var cronshot = require('cronshot');
+var cronshot = require('cronshot'),
+  middlware = {
+    'local': require('cronshot-local')
+  };
 
-// Mobstor Screenshot Example
-// --------------------------
+// Local File Example
+// ------------------
 
 // Takes a screenshot of google.com,
-// saves the screenshot locally,
-// and saves it to mobstor
+// and saves the screenshot to the local file system
 
-// Mobstor example
+// Save Local File Example
 cronshot.startCapturing({
-  // The URL of the website to take a screenshot of
-  'url': 'http://www.google.com',
-  // Where to save the screen shot locally
-  'path': __dirname,
-  // Our middleware modules
-  'saveMiddleware': [{
-      'middleware': require('cronshot-local')
-    }, {
-    // Function that does all the mobstor stuff
-    'middleware': require('cronshot-mobstor'),
-    'options': {
-      'host': 'playground.yahoofs.com',
-      'hostPath': '/test',
-
-      // optional headers to be sent to Mobstor 
-      'headers': {
-        'Cache-Control': 'max-age=86400'
-      }
-    }
-  }]
+    // The webpage URL that you would like to take a screenshot of
+    'url': 'http://sports.yahoo.com',
+    // The local path where you would like to save the image
+    'path': __dirname,
+    // Only takes one screenshot
+    'cronPattern': false,
+    // What middleware functions to use each time a screenshot is taken
+    'saveMiddleware': ['middleware': middleware.local]
 }, function(err) {
-  // optional callback function once all screenshots have been taken
+    if (err) {
+        console.error(err);
+    }
 });
-```
 
 **Take and Save a Transparent Screenshot**
 
+`npm install cronshot-imagemagick`
+
 ```javascript
-var cronshot = require('cronshot');
+var cronshot = require('cronshot'),
+  middlware = {
+    'imagemagick': require('cronshot-imagemagick')
+  };
 
 // Image Magick Example
 // --------------------
@@ -87,14 +83,16 @@ var cronshot = require('cronshot');
 
 // Image Magick example
 cronshot.startCapturing({
-  // The URL of the website to take a screenshot of
-  'url': 'http://www.google.com',
-  // Where to save the screen shot locally
+  // The webpage URL that you would like to take a screenshot of
+  'url': 'http://sports.yahoo.com',
+  // The local path where you would like to save the image
   'path': __dirname,
+  // Only takes one screenshot
+  'cronPattern': false,
   // Our middleware modules
   'saveMiddleware': [{
     // Function that does all the Image Magick stuff
-    'middleware': require('cronshot-imagemagick'),
+    'middleware': middleware.imagemagick,
     'options': {
       'gmCommands': [{
         'method': 'trim',
@@ -112,8 +110,13 @@ cronshot.startCapturing({
 
 **Take and Save A Screenshot To The Local Filesystem Every 10 seconds**
 
+`npm install cronshot-local`
+
 ```javascript
-var cronshot = require('cronshot');
+var cronshot = require('cronshot'),
+  middlware = {
+    'local': require('cronshot-local')
+  };
 
 // Local File Example
 // ------------------
@@ -123,36 +126,13 @@ var cronshot = require('cronshot');
 
 // Save Local File Example
 cronshot.startCapturing({
-  'url': 'http://yahoo.com',
+  // The webpage URL that you would like to take a screenshot of
+  'url': 'http://sports.yahoo.com',
+  // The local path where you would like to save the image
   'path': __dirname,
-  'saveMiddleware': [{
-    'middleware': require('cronshot-local')
-  }]
-}, function(err) {
-  if(err)
-    console.error(err);
-});
-```
-
-**Take and Save An Image To The Local Filesystem One Time**
-
-```javascript
-var cronshot = require('cronshot');
-
-// Local File Example
-// ------------------
-
-// Takes a screenshot of google.com,
-// and saves the screenshot to the local file system
-
-// Save Local File Example
-cronshot.startCapturing({
-  'url': 'http://yahoo.com',
-  'path': __dirname,
-  'cronPattern': false,
-  'saveMiddleware': [{
-    'middleware': require('cronshot-local')
-  }]
+  // Cron pattern to run every 10 seconds
+  'cronPattern': '*/10 * * * * *',
+  'saveMiddleware': [middleware.local],
 }, function(err) {
   if(err)
     console.error(err);
@@ -161,46 +141,87 @@ cronshot.startCapturing({
 
 **Run One Or More Cron Jobs In Parallel**
 
+`npm install cronshot-local`
+
 ```javascript
-var cronshot = require('cronshot');
+var cronshot = require('cronshot'),
+  middlware = {
+    'local': require('cronshot-local')
+  };
 
 // Save Local Files Example
 // -----------------------
 
-// Takes a screenshot of google.com and yahoo.com,
+// Takes a screenshot of sports.yahoo.com and yahoo.com,
 // and saves both screenshots in the current local directory
-cronshot.startCapturing([{
-  'url': 'http://www.google.com',
-  'path': __dirname,
-  'imageName': 'screenshot.png',
-  'saveMiddleware': require('cronshot-local')
-}, {
-  'url': 'http://yahoo.com',
-  'path': __dirname,
-  'imageName': 'screenshot1.png',
-  'saveMiddleware': require('cronshot-local')
-}], function(err) {
-  // optional callback function once all screenshots have been taken
+cronshot.startCapturing({
+  'parallelLimit': 2,
+  'screenshots': [{
+    // The webpage URL that you would like to take a screenshot of
+    'url': 'http://sports.yahoo.com',
+    // The local path where you would like to save the image
+    'path': __dirname,
+    'imageName': 'screenshot.png',
+    'saveMiddleware': [middleware.local]
+  }, {
+    'url': 'http://yahoo.com',
+    'path': __dirname,
+    'imageName': 'screenshot1.png',
+    'saveMiddleware': require('cronshot-local')
+  }]
+}, function(err) {
+    // optional callback function once all screenshots have been taken
 });
 ```
 
 **Passing Options via Command Line**
 
-`node example/cronshot-runner.js --customCSS 'body { background: blue !important; }' --url 'http://google.com'`
+`node cronshot-runner.js --customCSS 'body { background: blue !important; }' --url 'http://google.com'`
 
 **Note:** You can pass BOTH **code options** AND **command line options**. If you pass the same option via both methods, the command line option takes precedence.
 
-## Middleware
+## Save Middleware
 
-The `saveMiddleware` option accepts one or more functions that can be used to manipulate/save a screenshot image.
+The `saveMiddleware` option accepts one or more functions, that are run serially (in order), to manipulate/save a screenshot image.
+
+### Available Save Middleware
 
 Below are the current middleware functions available:
 
-[cronshot-imagemagick](https://git.corp.yahoo.com/sports/cronshot-imagemagick) - Cronshot middleware to manipulate and save images with ImageMagick
+[cronshot-local](https://github.com/yahoo/cronshot-local) - Cronshot middleware to save images locally
 
-[cronshot-local](https://git.corp.yahoo.com/sports/cronshot-local) - Cronshot middleware to save images locally
+[cronshot-imagemagick](https://github.com/yahoo/cronshot-imagemagick) - Cronshot middleware to manipulate and save images with ImageMagick
 
-[cronshot-mobstor](https://git.corp.yahoo.com/sports/cronshot-mobstor) - Cronshot middleware that saves screenshots to Mobstor
+### Writing Your Own Save Middleware
+
+### Best Practices
+
+* Should be small (~100 or less of code)
+
+* Should do one thing (eg. save to filesystem, manipulate image, save to cdn)
+
+* Should call a callback function when completed
+
+
+### Example
+
+```javascript
+module.exports = function(obj, callback) {
+    var options = obj.options,
+        content = obj.readStream,
+        info = {
+            'name': 'example-middleware'
+        },
+        error = false;
+
+      callback(error, info);
+}
+```
+
+
+### Review
+
+Save middleware functions are only provided three things; the **user options**, the **screenshot read stream**, and the **callback function** to call when all actions are completed.  Please make sure to pass an `info` object, with the name of the middleware, to the callback function.  
 
 
 ## Options
@@ -208,22 +229,20 @@ Below are the current middleware functions available:
 ```javascript
 // The time to fire off your job. This can be in the form of cron syntax or a JS Date object.
 // The default runs every 10 seconds
-// If you set this to false, then cronshot will only take one screen shot
+// If you set this to false, then CronShot will only take one screen shot
 'cronPattern': '*/10 * * * * *',
 // The webpage URL that you would like to take a screenshot of
 'url': '',
 // The name of the image you would like to be saved
 'imageName': 'screenshot.png',
-// The base host that you would like to save to
-'host': '',
-// the path that you would like to save to
+// The local path where you would like to save the image
 'path': '',
 // User agent to use when creating the screenshot
 'userAgent': '',
 // The dimensions of the browser window
 'screenSize': {
-	'width': 1024,
-	'height': 768
+  'width': 1024,
+  'height': 768
 },
 //The area of the page document, starting at the upper left corner, to render.
 // Possible values are 'screen', 'all', and a number defining a pixel length.
@@ -231,18 +250,18 @@ Below are the current middleware functions available:
 // (i.e. the shot displays what is initially visible within the browser window). 
 // 'all' causes the length to be set to the length of the document along the given dimension.
 'shotSize': {
-	'width': 'window',
-	'height': 'window'
+  'width': 'window',
+  'height': 'window'
 },
 // The left and top offsets define the upper left corner of the screenshot rectangle.
 // The right and bottom offsets allow pixels to be removed from the shotSize dimensions
 // (e.g. a shotSize height of 'all' with a bottom offset of 30 would cause all but the
 // last 30 rows of pixels on the site to be rendered).
 'shotOffset': {
-	'left': 0,
-	'right': 0,
-	'top': 0,
-	'bottom': 0
+  'left': 0,
+  'right': 0,
+  'top': 0,
+  'bottom': 0
 },
 // The location of phantomjs.
 // Webshot tries to use the binary provided by the phantomjs NPM module,
@@ -277,13 +296,31 @@ Below are the current middleware functions available:
 'takeShotOnCallback': false,
 // If the loaded page has a non-200 status code, don't take a screenshot, cause an error instead.
 'errorIfStatusIsNot200': false,
-// If you set this to true, then cronshot will not print out any success/error logs
-'silent': false
+// If you set this to true, then CronShot will not print out any success/error logs
+'silent': false,
+// The maximum number of times you would like your screenshot cron job to run
+'max': false,
+// The maximum number of screenshot cron jobs to run in parallel
+// Note: This only applies if you are running more than one screenshot cron jobs
+'parallelLimit': 5
 ```
+
+## Contributing
+
+Please send all PR's to the `dev` branch.
+
+If your PR is a code change:
+
+1.  Install all node.js dev dependencies: `npm install`
+2.  Update the appropriate module inside of the `src/modules` directory.
+3.  Add a unit test inside of `tests/unit/cronshot.js`.
+4.  Verify that all tests are passing by running `npm test`.
+5.  Send the PR!
+
 
 ## Credits
 
-cronshot.js would not have been possible without the help/inspiration of the following libraries/awesome people:
+CronShot would not have been possible without the help/inspiration of the following libraries/awesome people:
 
  - [Brenden Kokoszka](https://github.com/brenden)'s [node-webshot](https://github.com/brenden/node-webshot)
   * Takes screenshots using [Phantom JS](https://github.com/ariya/phantomjs)
@@ -296,8 +333,6 @@ cronshot.js would not have been possible without the help/inspiration of the fol
  - [Caolan McMahon](https://github.com/caolan)'s [async](https://github.com/caolan/async)
   * Async utilities for node and the browser
   * Copyright (c) Caolan McMahon, 2010-2014 -  [MIT License](https://github.com/caolan/async/blob/master/LICENSE)
-
-### Optional
 
  - [Aaron Heckmann](https://github.com/aheckmann)'s [gm](https://github.com/aheckmann/gm)
   * GraphicsMagick for node
