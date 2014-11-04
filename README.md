@@ -26,7 +26,7 @@ CronShot uses:
 * **Install CronShot**
  - `npm install cronshot`
 
-* **Install/Create any CronShot [middleware functions](#middleware) that you want**
+* **Install/Create any CronShot [middleware functions](#save-middleware) that you want**
 
 * **Run CronShot using one of the examples below**
 
@@ -64,6 +64,7 @@ cronshot.startCapturing({
         console.error(err);
     }
 });
+```
 
 **Take and Save a Transparent Screenshot**
 
