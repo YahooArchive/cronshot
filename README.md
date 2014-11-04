@@ -70,6 +70,8 @@ cronshot.startCapturing({
 
 `npm install cronshot-imagemagick`
 
+`brew update && brew install imagemagick`
+
 ```javascript
 var cronshot = require('cronshot'),
   middlware = {
@@ -79,7 +81,7 @@ var cronshot = require('cronshot'),
 // Image Magick Example
 // --------------------
 
-// Takes a screenshot of google.com,
+// Takes a screenshot of sports.yahoo.com,
 // and converts the screenshot to be a transparent image using Image Magick
 
 // Image Magick example
