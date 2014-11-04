@@ -51,18 +51,19 @@ var cronshot = require('cronshot'),
 
 // Save Local File Example
 cronshot.startCapturing({
-    // The webpage URL that you would like to take a screenshot of
-    'url': 'http://sports.yahoo.com',
-    // The local path where you would like to save the image
-    'path': __dirname,
-    // Only takes one screenshot
-    'cronPattern': false,
-    // What middleware functions to use each time a screenshot is taken
-    'saveMiddleware': [middleware.local]
+  // The webpage URL that you would like to take a screenshot of
+  'url': 'http://sports.yahoo.com',
+  // The local path where you would like to save the image
+  'path': __dirname,
+  // Only takes one screenshot
+  'cronPattern': false,
+  // What middleware functions to use each time a screenshot is taken
+  'saveMiddleware': [middleware.local]
 }, function(err) {
-    if (err) {
-        console.error(err);
-    }
+  // optional callback function once all screenshots have been taken
+  if (err) {
+      console.error(err);
+  }
 });
 ```
 
@@ -108,6 +109,9 @@ cronshot.startCapturing({
   }]
 }, function(err) {
   // optional callback function once all screenshots have been taken
+  if (err) {
+      console.error(err);
+  }
 });
 ```
 
@@ -138,8 +142,10 @@ cronshot.startCapturing({
   // What middleware functions to use each time a screenshot is taken
   'saveMiddleware': [middleware.local],
 }, function(err) {
-  if(err)
-    console.error(err);
+  // optional callback function once all screenshots have been taken
+  if (err) {
+      console.error(err);
+  }
 });
 ```
 
@@ -180,7 +186,10 @@ cronshot.startCapturing({
     'saveMiddleware': [middleware.local]
   }]
 }, function(err) {
-    // optional callback function once all screenshots have been taken
+  // optional callback function once all screenshots have been taken
+  if (err) {
+      console.error(err);
+  }
 });
 ```
 
