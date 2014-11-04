@@ -92,7 +92,7 @@ cronshot.startCapturing({
   'path': __dirname,
   // Only takes one screenshot
   'cronPattern': false,
-  // Our middleware modules
+  // What middleware functions to use each time a screenshot is taken
   'saveMiddleware': [{
     // Function that does all the Image Magick stuff
     'middleware': middleware.imagemagick,
@@ -135,6 +135,7 @@ cronshot.startCapturing({
   'path': __dirname,
   // Cron pattern to run every 10 seconds
   'cronPattern': '*/10 * * * * *',
+  // What middleware functions to use each time a screenshot is taken
   'saveMiddleware': [middleware.local],
 }, function(err) {
   if(err)
@@ -164,13 +165,19 @@ cronshot.startCapturing({
     'url': 'http://sports.yahoo.com',
     // The local path where you would like to save the image
     'path': __dirname,
+    // The desired name of the image (the default is screenshot.png)
     'imageName': 'screenshot.png',
+    // What middleware functions to use each time a screenshot is taken
     'saveMiddleware': [middleware.local]
   }, {
+    // The webpage URL that you would like to take a screenshot of
     'url': 'http://yahoo.com',
+    // The local path where you would like to save the image
     'path': __dirname,
+    // The desired name of the image (the default is screenshot.png)
     'imageName': 'screenshot1.png',
-    'saveMiddleware': require('cronshot-local')
+    // What middleware functions to use each time a screenshot is taken
+    'saveMiddleware': [middleware.local]
   }]
 }, function(err) {
     // optional callback function once all screenshots have been taken
