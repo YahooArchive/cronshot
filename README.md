@@ -233,7 +233,7 @@ module.exports = function(obj, callback) {
         },
         error = false;
 
-      callback(error, info);
+    callback(error, info);
 }
 ```
 
@@ -352,10 +352,6 @@ CronShot would not have been possible without the help/inspiration of the follow
  - [Caolan McMahon](https://github.com/caolan)'s [async](https://github.com/caolan/async)
   * Async utilities for node and the browser
   * Copyright (c) Caolan McMahon, 2010-2014 -  [MIT License](https://github.com/caolan/async/blob/master/LICENSE)
-
- - [Aaron Heckmann](https://github.com/aheckmann)'s [gm](https://github.com/aheckmann/gm)
-  * GraphicsMagick for node
-  * Copyright (c) Aaron Heckmann, 2010 -  [MIT License](https://github.com/aheckmann/gm#license)
 
 
 ## Contributors
