@@ -39,7 +39,7 @@ CronShot uses:
 
 ```javascript
 var cronshot = require('cronshot'),
-  middlware = {
+  middleware = {
     'local': require('cronshot-local')
   };
 
@@ -75,7 +75,7 @@ cronshot.startCapturing({
 
 ```javascript
 var cronshot = require('cronshot'),
-  middlware = {
+  middleware = {
     'imagemagick': require('cronshot-imagemagick')
   };
 
@@ -121,7 +121,7 @@ cronshot.startCapturing({
 
 ```javascript
 var cronshot = require('cronshot'),
-  middlware = {
+  middleware = {
     'local': require('cronshot-local')
   };
 
@@ -155,7 +155,7 @@ cronshot.startCapturing({
 
 ```javascript
 var cronshot = require('cronshot'),
-  middlware = {
+  middleware = {
     'local': require('cronshot-local')
   };
 
