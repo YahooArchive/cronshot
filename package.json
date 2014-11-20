@@ -1,0 +1,70 @@
+{
+    "name": "cronshot",
+    "description": "Cron job scheduler to take, alter, and store web page screenshots",
+    "contributors": [
+        {
+            "name": "Greg Franko"
+        },
+        {
+            "name": "Chase West"
+        },
+        {
+            "name": "Kevin Ku"
+        },
+        {
+            "name": "Akshay Patel"
+        }
+    ],
+    "version": "0.1.15",
+    "repository": {
+        "type": "git",
+        "url": "git@git.corp.yahoo.com:sports/cronshot.git#master",
+        "revision": "14ac9bfa65386f904e7fde820d4be9f3f75b6153"
+    },
+    "keywords": [
+        "cron",
+        "screenshot"
+    ],
+    "main": "./src/index.js",
+    "scripts": {
+        "test": "node node_modules/istanbul/lib/cli.js cover --dir artifacts -- ./node_modules/mocha/bin/_mocha tests/unit/* --recursive --reporter spec",
+        "lint": "grunt yhint"
+    },
+    "engines": {
+        "node": "~0.10.0"
+    },
+    "dependencies": {
+        "async": "^0.9.0",
+        "colors": "^0.6.2",
+        "cron": "^1.0.4",
+        "webshot": "^0.15.2"
+    },
+    "devDependencies": {
+        "chai": "1.x",
+        "cronshot-imagemagick": "^0.1.1",
+        "cronshot-local": "^0.1.1",
+        "cronshot-mobstor": "^0.1.2",
+        "grunt": "^0.4.5",
+        "grunt-cli": "~0.1",
+        "grunt-replicatr": "0.0.x",
+        "grunt-td": "0.0.x",
+        "istanbul": "0.x",
+        "mocha": "1.x",
+        "mockery": "1.x",
+        "precommit-hook": "1.x"
+    },
+    "yahoo": {
+        "bugzilla": {
+            "component": "General",
+            "product": "Sports"
+        },
+        "custodian": {
+            "email": "gfranko@yahoo-inc.com"
+        },
+        "screwdriver": {
+            "build_url": "http://jenkins.screwdriver.corp.yahoo.com:9999/jenkins/job/14212-cronshot-trunk-component/17/",
+            "project_id": 14212,
+            "project_url": "http://screwdriver.corp.yahoo.com/projects/14212"
+        }
+    }
+}
