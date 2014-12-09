@@ -35,45 +35,6 @@ Cronshot uses:
 
 ## Examples
 
-**Take and Save a Screenshot to Mobstor**
-
-```javascript
-var cronshot = require('cronshot');
-
-// Mobstor Screenshot Example
-// --------------------------
-
-// Takes a screenshot of google.com,
-// saves the screenshot locally,
-// and saves it to mobstor
-
-// Mobstor example
-cronshot.startCapturing({
-  // The URL of the website to take a screenshot of
-  'url': 'http://www.google.com',
-  // Where to save the screen shot locally
-  'path': __dirname,
-  // Our middleware modules
-  'saveMiddleware': [{
-      'middleware': require('cronshot-local')
-    }, {
-    // Function that does all the mobstor stuff
-    'middleware': require('cronshot-mobstor'),
-    'options': {
-      'host': 'playground.yahoofs.com',
-      'hostPath': '/test',
-
-      // optional headers to be sent to Mobstor 
-      'headers': {
-        'Cache-Control': 'max-age=86400'
-      }
-    }
-  }]
-}, function(err) {
-  // optional callback function once all screenshots have been taken
-});
-```
-
 **Take and Save a Transparent Screenshot**
 
 ```javascript
@@ -199,8 +160,6 @@ Below are the current middleware functions available:
 [cronshot-imagemagick](https://git.corp.yahoo.com/sports/cronshot-imagemagick) - Cronshot middleware to manipulate and save images with ImageMagick
 
 [cronshot-local](https://git.corp.yahoo.com/sports/cronshot-local) - Cronshot middleware to save images locally
-
-[cronshot-mobstor](https://git.corp.yahoo.com/sports/cronshot-mobstor) - Cronshot middleware that saves screenshots to Mobstor
 
 
 ## Options
