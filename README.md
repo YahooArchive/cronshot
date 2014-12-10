@@ -46,7 +46,7 @@ var cronshot = require('cronshot'),
 // Local File Example
 // ------------------
 
-// Takes a screenshot of google.com,
+// Takes a screenshot of sports.yahoo.com,
 // and saves the screenshot to the local file system
 
 // Save Local File Example
@@ -125,7 +125,7 @@ var cronshot = require('cronshot'),
 // Local File Example
 // ------------------
 
-// Takes a screenshot of google.com,
+// Takes a screenshot of sports.yahoo.com,
 // and saves the screenshot to the local file system
 
 // Save Local File Example
