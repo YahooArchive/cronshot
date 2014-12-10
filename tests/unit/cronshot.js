@@ -14,7 +14,7 @@ describe('cronshot', function() {
         });
     });
 
-    it('should error if an url option is not passed', function() {
+    it("should error if an url option is not passed", function() {
         cronshot.startCapturing({
             silent: true,
             saveMiddleware: []
@@ -23,7 +23,7 @@ describe('cronshot', function() {
         });
     });
 
-    it('should error if a path option is not passed', function() {
+    it("should error if a path option is not passed", function() {
         cronshot.startCapturing({
             silent: true,
             saveMiddleware: [localMiddleware]
@@ -32,7 +32,7 @@ describe('cronshot', function() {
         });
     });
 
-    it('should error if webshot throws an error', function() {
+    it("should error if webshot throws an error", function() {
         cronshot.startCapturing({
             silent: true,
             saveMiddleware: [localMiddleware],
@@ -88,7 +88,7 @@ describe('cronshot', function() {
         });
     });
 
-    it('should succeed if more than one middleware functions are used', function(done) {
+    it("should succeed if more than one middleware functions are used", function(done) {
         var saveMiddlewareExample1 = function(obj, callback) {
                 callback(null, {
                     name: 'test1'

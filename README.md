@@ -109,9 +109,6 @@ cronshot.startCapturing({
   }]
 }, function(err) {
   // optional callback function once all screenshots have been taken
-  if (err) {
-      console.error(err);
-  }
 });
 ```
 
@@ -159,9 +156,6 @@ var cronshot = require('cronshot'),
     'local': require('cronshot-local')
   };
 
-// Save Local Files Example
-// -----------------------
-
 // Takes a screenshot of sports.yahoo.com and yahoo.com,
 // and saves both screenshots in the current local directory
 cronshot.startCapturing({
@@ -195,7 +189,7 @@ cronshot.startCapturing({
 
 **Passing Options via Command Line**
 
-`node cronshot-runner.js --customCSS 'body { background: blue !important; }' --url 'http://google.com'`
+`node cronshot-runner.js --customCSS 'body { background: blue !important; }' --url 'http://yahoo.com'`
 
 **Note:** You can pass BOTH **code options** AND **command line options**. If you pass the same option via both methods, the command line option takes precedence.
 
@@ -210,6 +204,7 @@ Below are the current middleware functions available:
 [cronshot-local](https://github.com/yahoo/cronshot-local) - Cronshot middleware to save images locally
 
 [cronshot-imagemagick](https://github.com/yahoo/cronshot-imagemagick) - Cronshot middleware to manipulate and save images with ImageMagick
+
 
 ### Writing Your Own Save Middleware
 
@@ -339,7 +334,7 @@ If your PR is a code change:
 
 ## Credits
 
-CronShot would not have been possible without the help/inspiration of the following libraries/awesome people:
+cronshot.js would not have been possible without the help/inspiration of the following libraries/awesome people:
 
  - [Brenden Kokoszka](https://github.com/brenden)'s [node-webshot](https://github.com/brenden/node-webshot)
   * Takes screenshots using [Phantom JS](https://github.com/ariya/phantomjs)

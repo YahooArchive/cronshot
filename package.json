@@ -15,11 +15,10 @@
             "name": "Akshay Patel"
         }
     ],
-    "version": "0.1.15",
+    "version": "0.1.0",
     "repository": {
         "type": "git",
-        "url": "git@git.corp.yahoo.com:sports/cronshot.git#master",
-        "revision": "14ac9bfa65386f904e7fde820d4be9f3f75b6153"
+        "url": "https://github.com/yahoo/cronshot.git"
     },
     "keywords": [
         "cron",
@@ -40,10 +39,8 @@
     },
     "devDependencies": {
         "chai": "1.x",
-        "cronshot-imagemagick": "^0.1.1",
-        "cronshot-local": "^0.1.1",
-        "grunt": "^0.4.5",
         "istanbul": "0.x",
-        "mocha": "1.x"
+        "mocha": "1.x",
+        "mockery": "1.x"
     }
 }
