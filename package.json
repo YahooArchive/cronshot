@@ -39,6 +39,7 @@
     },
     "devDependencies": {
         "chai": "1.x",
+        "cronshot-local": "^0.1.5",
         "istanbul": "0.x",
         "mocha": "1.x",
         "mockery": "1.x"
