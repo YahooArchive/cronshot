@@ -22,13 +22,23 @@ CronShot uses:
 
   Unfortunately, PhantomJS cannot be installed automatically via npm, so you need to install it yourself. There are a number of ways to install PhantomJS.
 
-* **OSX**:
- - Make sure you have [homebrew](http://brew.sh/) installed: `ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"`
- - Install via [homebrew](http://brew.sh/): `brew update && brew install phantomjs`
+  * **OSX**:
+
+    Make sure you have [homebrew](http://brew.sh/) installed: `ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"`
+    
+    Install via [homebrew](http://brew.sh/): `brew update && brew install phantomjs`
  
-* **Windows**:
- - Install the binary (http://phantomjs.org/download.html)
- - Make sure the `phantomjs` executable is in the system `PATH`: http://www.computerhope.com/issues/ch000549.htm
+  * **Windows**:
+
+    Install the binary (http://phantomjs.org/download.html)
+   
+    Make sure the `phantomjs` executable is in the system `PATH`: http://www.computerhope.com/issues/ch000549.htm
+  
+  * **Linux**:
+
+    Install the binary (http://phantomjs.org/download.html)
+   
+    Make sure the `phantomjs` executable is in the system `PATH`:  https://www.google.com/search?q=How+do+I+change+the+PATH+variable+in+Linux
  
 
 * **Install CronShot**
