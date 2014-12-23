@@ -1,7 +1,7 @@
 CronShot
 ========
 
-Node module that allows you to schedule, take, alter, and store web page screenshots
+Node module to schedule, take, alter, and store web page screenshots
 
 `npm install cronshot`
 
